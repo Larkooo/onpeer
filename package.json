@@ -10,6 +10,9 @@
     "web:dev": "cd packages/web && next dev",
     "web:build": "cd packages/web && next build",
     "web:start": "cd packages/web && next start",
-    "web:lint": "cd packages/web && next lint"
+    "web:lint": "cd packages/web && next lint",
+    "contracts:build": "cd packages/contracts && bunx thirdweb@latest detect",
+    "contracts:deploy": "cd packages/contracts && bunx thirdweb@latest deploy",
+    "contracts:release": "cd packages/contracts && bunx thirdweb@latest release"
   }
 }
