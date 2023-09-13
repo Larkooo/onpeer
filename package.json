@@ -1,0 +1,15 @@
+{
+  "name": "onpeer",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "backend:dev": "cd packages/backend && bun run --watch src/index.ts",
+    "web:dev": "cd packages/web && next dev",
+    "web:build": "cd packages/web && next build",
+    "web:start": "cd packages/web && next start",
+    "web:lint": "cd packages/web && next lint"
+  }
+}
