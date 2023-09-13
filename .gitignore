@@ -40,3 +40,7 @@ yarn-error.log*
 **/*.log
 package-lock.json
 **/*.bun
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
