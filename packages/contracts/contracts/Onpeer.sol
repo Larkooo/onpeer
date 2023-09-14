@@ -30,7 +30,7 @@ contract Onpeer is ERC721SignatureMint {
     // likeHash: hash of video asset id and address of liker
     // likeHash => isLiked
     mapping(uint256 => bool) private videoAssetLiked;
-    // tokenId => comment
+    // tokenId => comments
     mapping(uint256 => VideoAssetComment[]) private videoAssetComments;
 
     event VideoAssetCreated(
@@ -100,6 +100,24 @@ contract Onpeer is ERC721SignatureMint {
         emit TokensMintedWithSignature(signer, receiver, tokenIdToMint, _req);
     }
 
+    function setVideoAssetTitle(
+        uint256 _tokenId,
+        string calldata _title
+    ) external {
+        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
+        require(msg.sender == ownerOf(_tokenId), "Not authorized");
+        videoAssets[_tokenId].title = _title;
+    }
+
+    function setVideoAssetDescription(
+        uint256 _tokenId,
+        string calldata _description
+    ) external {
+        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
+        require(msg.sender == ownerOf(_tokenId), "Not authorized");
+        videoAssets[_tokenId].description = _description;
+    }
+
     function like(uint256 _tokenId) external {
         require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
         uint256 likeHash = uint256(
@@ -138,20 +156,16 @@ contract Onpeer is ERC721SignatureMint {
 
         emit VideoAssetCommented(_tokenId, _comment, msg.sender);
     }
-    
-    function videoAsset(uint256 _tokenId)
-        external
-        view
-        returns (VideoAsset memory)
-    {
+
+    function videoAsset(
+        uint256 _tokenId
+    ) external view returns (VideoAsset memory) {
         return videoAssets[_tokenId];
     }
 
-    function comments(uint256 _tokenId)
-        external
-        view
-        returns (VideoAssetComment[] memory)
-    {
+    function comments(
+        uint256 _tokenId
+    ) external view returns (VideoAssetComment[] memory) {
         return videoAssetComments[_tokenId];
     }
 }
