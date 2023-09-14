@@ -30,9 +30,20 @@ contract Onpeer is ERC721SignatureMint {
     // likeHash: hash of video asset id and address of liker
     // likeHash => isLiked
     mapping(uint256 => bool) private videoAssetLiked;
-    // commentHash: hash of video asset id and address of author
-    // commentHash => comment
-    mapping(uint256 => VideoAssetComment) private videoAssetComment;
+    // tokenId => comment
+    mapping(uint256 => VideoAssetComment[]) private videoAssetComments;
+
+    event VideoAssetCreated(
+        uint256 tokenId,
+        string title,
+        string description,
+        address author
+    );
+
+    event VideoAssetLiked(uint256 tokenId, address liker);
+    event VideoAssetUnliked(uint256 tokenId, address liker);
+
+    event VideoAssetCommented(uint256 tokenId, string comment, address author);
 
     constructor(
         address _defaultAdmin,
@@ -91,21 +102,56 @@ contract Onpeer is ERC721SignatureMint {
 
     function like(uint256 _tokenId) external {
         require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
-        uint256 likeHash = uint256(keccak256(abi.encodePacked(_tokenId, msg.sender)));
+        uint256 likeHash = uint256(
+            keccak256(abi.encodePacked(_tokenId, msg.sender))
+        );
 
         require(!videoAssetLiked[likeHash], "Already liked");
-    
+
         videoAssets[_tokenId].likes.increment();
         videoAssetLiked[likeHash] = true;
+
+        emit VideoAssetLiked(_tokenId, msg.sender);
+    }
+
+    function undoLike(uint256 _tokenId) external {
+        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
+        uint256 likeHash = uint256(
+            keccak256(abi.encodePacked(_tokenId, msg.sender))
+        );
+
+        require(videoAssetLiked[likeHash], "Not liked");
+
+        videoAssets[_tokenId].likes.decrement();
+        videoAssetLiked[likeHash] = false;
+
+        emit VideoAssetUnliked(_tokenId, msg.sender);
     }
 
     function comment(uint256 _tokenId, string calldata _comment) external {
         require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
-        uint256 commentHash = uint256(keccak256(abi.encodePacked(_tokenId, msg.sender)));
 
-        require(videoAssetComment[commentHash].tokenId == 0, "Already commented");
-
+        videoAssetComments[_tokenId].push(
+            VideoAssetComment(_tokenId, _comment, msg.sender)
+        );
         videoAssets[_tokenId].comments.increment();
-        videoAssetComment[commentHash] = VideoAssetComment(_tokenId, _comment, msg.sender);
+
+        emit VideoAssetCommented(_tokenId, _comment, msg.sender);
+    }
+    
+    function videoAsset(uint256 _tokenId)
+        external
+        view
+        returns (VideoAsset memory)
+    {
+        return videoAssets[_tokenId];
+    }
+
+    function comments(uint256 _tokenId)
+        external
+        view
+        returns (VideoAssetComment[] memory)
+    {
+        return videoAssetComments[_tokenId];
     }
 }
