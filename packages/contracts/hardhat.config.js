@@ -1,4 +1,5 @@
 require("@matterlabs/hardhat-zksync-solc");
+require('@openzeppelin/hardhat-upgrades');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {

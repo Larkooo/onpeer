@@ -7,6 +7,9 @@
   },
   "devDependencies": {
     "@matterlabs/hardhat-zksync-solc": "^0.3.17",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@openzeppelin/hardhat-upgrades": "^2.2.1",
+    "ethers": "^6.7.1",
     "hardhat": "^2.13.0"
   },
   "dependencies": {
