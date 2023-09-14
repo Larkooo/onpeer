@@ -100,21 +100,18 @@ contract Onpeer is ERC721SignatureMint {
         emit TokensMintedWithSignature(signer, receiver, tokenIdToMint, _req);
     }
 
-    function setVideoAssetTitle(
+    function setVideoAssetMetadata(
         uint256 _tokenId,
-        string calldata _title
-    ) external {
-        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
-        require(msg.sender == ownerOf(_tokenId), "Not authorized");
-        videoAssets[_tokenId].title = _title;
-    }
-
-    function setVideoAssetDescription(
-        uint256 _tokenId,
+        string calldata _title,
         string calldata _description
     ) external {
         require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
-        require(msg.sender == ownerOf(_tokenId), "Not authorized");
+        require(
+            msg.sender == ownerOf(_tokenId),
+            "Not authorized"
+        );
+
+        videoAssets[_tokenId].title = _title;
         videoAssets[_tokenId].description = _description;
     }
 
