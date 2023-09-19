@@ -1,18 +1,34 @@
 {
-  "name": "onpeer",
+  "name": "onpeer-app",
+  "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "backend:dev": "cd packages/backend && bun run --watch src/index.ts",
-    "web:dev": "cd packages/web && next dev",
-    "web:build": "cd packages/web && next build",
-    "web:start": "cd packages/web && next start",
-    "web:lint": "cd packages/web && next lint",
-    "contracts:build": "cd packages/contracts && bunx thirdweb@latest detect",
-    "contracts:deploy": "cd packages/contracts && bunx thirdweb@latest deploy",
-    "contracts:release": "cd packages/contracts && bunx thirdweb@latest release"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "npx --yes thirdweb@latest generate"
+  },
+  "dependencies": {
+    "@thirdweb-dev/auth": "^3.2.42",
+    "@thirdweb-dev/contracts": "^3.10.0",
+    "@thirdweb-dev/react": "^3.15.0",
+    "@thirdweb-dev/sdk": "^3.10.61",
+    "ethers": "^5",
+    "next": "^13.4.19",
+    "react": "^18.2",
+    "react-dom": "^18.2",
+    "zksync-web3": "^0.14.3"
+  },
+  "devDependencies": {
+    "@matterlabs/hardhat-zksync-solc": "^0.3.17",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@openzeppelin/hardhat-upgrades": "^2.2.1",
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.27",
+    "eslint": "^8.32.0",
+    "eslint-config-next": "^13",
+    "hardhat": "^2.13.0",
+    "typescript": "^4.9.4"
   }
 }

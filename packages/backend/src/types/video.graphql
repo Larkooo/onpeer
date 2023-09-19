@@ -1,8 +1,0 @@
-type VideoAsset {
-    id: ID!
-    title: String!
-    description: String
-    createdAt: Int!
-    updatedAt: Int!
-    signerAddress: String!
-}
