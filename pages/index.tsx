@@ -18,16 +18,16 @@ const Home: NextPage = () => {
   const { user, isLoggedIn } = useUser();
   const [secret, setSecret] = useState();
 
-  const onUpload = useCallback(async (files: File[]) => {
-    console.log('kek')
+  const onUpload = async (files: File[]) => {
     const data = new FormData();
-    // data.append("file", files[0]);
+    data.append("file", files[0]);
 
     const resSig = await fetch("/api/upload", {
       method: "POST",
       body: data,
     });
-  }, []);
+    console.log(await resSig.json());
+  };
 
   return (
     <div>
