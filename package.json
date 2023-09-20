@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@livepeer/react": "^2.8.6",
     "@thirdweb-dev/auth": "^3",
     "@thirdweb-dev/contracts": "^3",
     "@thirdweb-dev/react": "^3",
