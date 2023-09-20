@@ -7,20 +7,17 @@ import {
 } from "@thirdweb-dev/react";
 import type { NextPage } from "next";
 import { useState } from "react";
+import { ConnectWallet } from "@thirdweb-dev/react";
+import { UploadFile } from "components/UploadFile";
+import { Button } from "@/components/ui/button";
+
 
 const Home: NextPage = () => {
   const address = useAddress();
-  const connect = useMetamask();
   const { login } = useLogin();
   const { logout } = useLogout();
   const { user, isLoggedIn } = useUser();
   const [secret, setSecret] = useState();
-
-  const getSecret = async () => {
-    const res = await fetch("/api/secret");
-    const data = await res.json();
-    setSecret(data.message);
-  };
 
   return (
     <div>
@@ -29,9 +26,12 @@ const Home: NextPage = () => {
       ) : address ? (
         <button onClick={() => login()}>Login</button>
       ) : (
-        <button onClick={() => connect()}>Connect</button>
+        <ConnectWallet theme="dark" />
       )}
-      <button onClick={getSecret}>Get Secret</button>
+      <UploadFile />
+      <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
 
       <pre>Connected Wallet: {address}</pre>
       <pre>User: {JSON.stringify(user, undefined, 2) || "N/A"}</pre>

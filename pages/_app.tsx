@@ -1,13 +1,18 @@
+import "styles/globals.css";
+
 import type { AppProps } from "next/app";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
+import Contracts from "../constants/contracts";
 
-// This is the chain your dApp will work on.
-const activeChain = process.env.CHAIN;
+const chains = Contracts.map((c) => c.chain);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThirdwebProvider
-      activeChain={activeChain}
+      clientId={process.env.THIRDWEB_CLIENT_ID || ""}
+      secretKey={process.env.THIRDWEB_SECRET_KEY || ""}
+      activeChain={chains[0]}
+      supportedChains={chains}
       authConfig={{
         domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
         authUrl: "/api/auth",
