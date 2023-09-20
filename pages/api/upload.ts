@@ -1,5 +1,5 @@
 import { ThirdwebSDK, getContract } from "@thirdweb-dev/sdk";
-import { getUser } from "./auth/[...thirdweb]";
+import { getUser, onpeerWallet } from "./auth/[...thirdweb]";
 import { NextApiRequest, NextApiResponse } from "next";
 import formidable, { File as FormidableFile } from "formidable";
 import { studioProvider, createClient } from "@livepeer/react";
@@ -12,10 +12,14 @@ const { provider: livepeer } = createClient({
     apiKey: process.env.LIVEPEER_API_KEY!,
   }),
 });
-const sdk = new ThirdwebSDK("mumbai", {
-  clientId: process.env.THIRDWEB_CLIENT_ID!,
-  secretKey: process.env.THIRDWEB_SECRET_KEY!,
-});
+const sdk = ThirdwebSDK.fromPrivateKey(
+  process.env.THIRDWEB_AUTH_PRIVATE_KEY!,
+  "mumbai",
+  {
+    clientId: process.env.THIRDWEB_CLIENT_ID!,
+    secretKey: process.env.THIRDWEB_SECRET_KEY!,
+  }
+);
 
 //set bodyparser
 export const config = {
@@ -56,12 +60,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-
   const result = await livepeer.createAsset({
     sources: [
       {
         name: file.originalFilename!,
-        file: createReadStream(file.filepath)
+        file: createReadStream(file.filepath),
       },
     ],
   });
