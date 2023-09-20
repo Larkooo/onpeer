@@ -1,29 +1,28 @@
 {
-  "name": "onpeer-app",
+  "name": "onpeer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npx --yes thirdweb@latest generate"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@thirdweb-dev/auth": "^3.2.42",
-    "@thirdweb-dev/contracts": "^3.10.0",
-    "@thirdweb-dev/react": "^3.15.0",
-    "@thirdweb-dev/sdk": "^3.10.61",
-    "ethers": "^5",
-    "next": "^13.4.19",
+    "@thirdweb-dev/auth": "^3",
+    "@thirdweb-dev/contracts": "^3",
+    "@thirdweb-dev/react": "^3",
+    "@thirdweb-dev/sdk": "^3",
+    "formidable": "^3.5.1",
+    "next": "^13",
     "react": "^18.2",
-    "react-dom": "^18.2",
-    "zksync-web3": "^0.14.3"
+    "react-dom": "^18.2"
   },
   "devDependencies": {
-    "@matterlabs/hardhat-zksync-solc": "^0.3.17",
-    "@nomicfoundation/hardhat-ethers": "^3.0.4",
-    "@openzeppelin/hardhat-upgrades": "^2.2.1",
+    "@matterlabs/hardhat-zksync-solc": "^0.3",
+    "@nomicfoundation/hardhat-ethers": "^3",
+    "@openzeppelin/hardhat-upgrades": "^2",
+    "@types/formidable": "^3.4.3",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
     "eslint": "^8.32.0",

@@ -1,6 +1,7 @@
 import { ThirdwebSDK, getContract } from "@thirdweb-dev/sdk";
 import { getUser } from "./auth/[...thirdweb]";
 import { NextApiRequest, NextApiResponse } from "next";
+import formidable from "formidable";
 
 const sdk = new ThirdwebSDK(process.env.CHAIN!, );
 
@@ -11,8 +12,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  // Retrieve file upload
-  const file = req.body.file;
+  // Retrieve file upload from form data using formidable
+  const form = new formidable.IncomingForm();
+  const data = await new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) return reject(err);
+      resolve({ fields, files });
+    });
+  });
+
 
   const user = await getUser(req);
 
