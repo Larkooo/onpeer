@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 using Counters for Counters.Counter;
 
 struct VideoAsset {
-    uint256 tokenId;
+    uint256 uid;
     string title;
     string description;
     Counters.Counter likes;
@@ -15,7 +15,7 @@ struct VideoAsset {
 }
 
 struct VideoAssetComment {
-    uint256 tokenId;
+    uint256 uid;
     string comment;
     address author;
 }
@@ -26,30 +26,34 @@ struct VideoAssetInit {
 }
 
 contract Onpeer is ERC721SignatureMint {
-    address private alternativeSigner;
-
     mapping(uint256 => VideoAsset) private videoAssets;
     // likeHash: hash of video asset id and address of liker
     // likeHash => isLiked
     mapping(uint256 => bool) private videoAssetLiked;
-    // tokenId => comments
+    // uid => comments
     mapping(uint256 => VideoAssetComment[]) private videoAssetComments;
 
     event VideoAssetCreated(
-        uint256 tokenId,
+        uint256 uid,
         string title,
         string description,
         address author
     );
 
-    event VideoAssetLiked(uint256 tokenId, address liker);
-    event VideoAssetUnliked(uint256 tokenId, address liker);
+    event VideoAssetMetadataUpdated(
+        uint256 uid,
+        string title,
+        string description,
+        address author
+    );
 
-    event VideoAssetCommented(uint256 tokenId, string comment, address author);
+    event VideoAssetLiked(uint256 uid, address liker);
+    event VideoAssetUnliked(uint256 uid, address liker);
+
+    event VideoAssetCommented(uint256 uid, string comment, address author);
 
     constructor(
         address _defaultAdmin,
-        address _alternativeSigner,
         string memory _name,
         string memory _symbol,
         address _royaltyRecipient,
@@ -64,9 +68,7 @@ contract Onpeer is ERC721SignatureMint {
             _royaltyBps,
             _primarySaleRecipient
         )
-    {
-        alternativeSigner = _alternativeSigner;
-    }
+    {}
 
     /// @dev Mints tokens according to the provided mint request.
     function mintWithSignature(
@@ -110,18 +112,22 @@ contract Onpeer is ERC721SignatureMint {
         string calldata _title,
         string calldata _description
     ) external {
-        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
-        require(
-            msg.sender == ownerOf(_tokenId),
-            "Not authorized"
-        );
+        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
+        require(msg.sender == ownerOf(_tokenId), "Not authorized");
 
         videoAssets[_tokenId].title = _title;
         videoAssets[_tokenId].description = _description;
+
+        emit VideoAssetMetadataUpdated(
+            _tokenId,
+            _title,
+            _description,
+            msg.sender
+        );
     }
 
     function like(uint256 _tokenId) external {
-        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
+        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
         uint256 likeHash = uint256(
             keccak256(abi.encodePacked(_tokenId, msg.sender))
         );
@@ -135,7 +141,7 @@ contract Onpeer is ERC721SignatureMint {
     }
 
     function undoLike(uint256 _tokenId) external {
-        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
+        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
         uint256 likeHash = uint256(
             keccak256(abi.encodePacked(_tokenId, msg.sender))
         );
@@ -149,7 +155,7 @@ contract Onpeer is ERC721SignatureMint {
     }
 
     function comment(uint256 _tokenId, string calldata _comment) external {
-        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
+        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
 
         videoAssetComments[_tokenId].push(
             VideoAssetComment(_tokenId, _comment, msg.sender)

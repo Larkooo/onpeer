@@ -6,15 +6,20 @@ import { studioProvider, createClient } from "@livepeer/react";
 import { NextRequest } from "next/server";
 import { createReadStream, readFile, readFileSync } from "fs";
 import { File } from "buffer";
+import { kv } from "@vercel/kv";
+import { PrismaClient } from "@prisma/client";
+import { Contract } from "constants/contracts";
 
-const { provider: livepeer } = createClient({
+export const prisma = new PrismaClient();
+
+export const { provider: livepeer } = createClient({
   provider: studioProvider({
     apiKey: process.env.LIVEPEER_API_KEY!,
   }),
 });
-const sdk = ThirdwebSDK.fromPrivateKey(
+export const sdk = ThirdwebSDK.fromPrivateKey(
   process.env.THIRDWEB_AUTH_PRIVATE_KEY!,
-  "mumbai",
+  Contract.chain,
   {
     clientId: process.env.THIRDWEB_CLIENT_ID!,
     secretKey: process.env.THIRDWEB_SECRET_KEY!,
@@ -67,6 +72,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         file: createReadStream(file.filepath),
       },
     ],
+  });
+
+  prisma.video.create({
+    data: {
+      id: result[0].id,
+      title: file.originalFilename!,
+      description: "",
+      authorId: user.address,
+      createdAt: new Date(result[0].createdAt ?? Date.now()),
+    },
   });
 
   const onpeer = await sdk.getContract(process.env.ONPEER_CONTRACT_ADDRESS!);

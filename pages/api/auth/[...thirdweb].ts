@@ -1,5 +1,7 @@
 import { ThirdwebAuth } from "@thirdweb-dev/auth/next";
 import { PrivateKeyWallet } from "@thirdweb-dev/auth/evm";
+import { PrismaClient } from "@prisma/client";
+import { prisma } from "../upload";
 
 export const onpeerWallet = new PrivateKeyWallet(process.env.THIRDWEB_AUTH_PRIVATE_KEY!);
 
@@ -10,7 +12,13 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
   // the Auth flow will still work.
   callbacks: {
     onLogin: async (address) => {
-      
+      prisma.user.upsert({
+        where: { id: address },
+        update: {},
+        create: {
+          id: address,
+        },
+      });
     },
     onUser: async (user) => {
       
