@@ -11,12 +11,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { ButtonIcon, Cross2Icon } from "@radix-ui/react-icons";
-import { useCallback, useEffect, useState } from "react";
+import {
+  ButtonIcon,
+  Cross2Icon,
+  Half2Icon,
+  ShadowInnerIcon,
+  UploadIcon,
+} from "@radix-ui/react-icons";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 interface UploadFileProps {
-  buttonText?: string;
+  button?: ReactNode;
   title?: string;
   description?: string;
   accept?: Record<string, string[]>;
@@ -26,7 +32,7 @@ interface UploadFileProps {
 }
 
 export const UploadFile = ({
-  buttonText = "Upload",
+  button = "Upload",
   title = "Upload",
   description = "",
   onUpload,
@@ -34,6 +40,7 @@ export const UploadFile = ({
   accept,
   maxSize,
 }: UploadFileProps) => {
+  const [uploading, setUploading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const [error, setError] = useState<string>();
@@ -64,7 +71,7 @@ export const UploadFile = ({
   return (
     <Dialog onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">{buttonText}</Button>
+        <Button variant="outline">{button}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -106,12 +113,23 @@ export const UploadFile = ({
             </Button>
           </DialogClose>
           <Button
-            onClick={() => files.length !== 0 && onUpload(files)}
+            onClick={() => {
+              setUploading(true);
+              onUpload(files);
+              setUploading(false);
+            }}
             className="text-xs"
             type="submit"
             disabled={files.length === 0}
           >
-            Upload
+            {uploading ? (
+              <>
+                <UploadIcon className="animate-pulse mr-2" />
+                Uploading..
+              </>
+            ) : (
+              "Upload"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

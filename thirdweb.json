@@ -4,7 +4,19 @@
   ],
   "contracts": [
     {
-      "address": "0x063205D43B48B968864d3325c7E1e09794b679eB",
+      "address": "0x93197192FDD5e708cb72b97652f2AAE00A44F4cB",
+      "chainId": 80001
+    },
+    {
+      "address": "0x3cc6CddA760b79bAfa08dF41ECFA224f810dCeB6",
+      "chainId": 80001
+    },
+    {
+      "address": "0x000000000000AAeB6D7670E522A718067333cd4E",
+      "chainId": 80001
+    },
+    {
+      "address": "0x3CC6CDDA760B79BAFA08DF41ECFA224F810DCEB6",
       "chainId": 80001
     }
   ]

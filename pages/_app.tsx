@@ -3,6 +3,10 @@ import "styles/globals.css";
 import type { AppProps } from "next/app";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { Contract } from "../constants/contracts";
+import { Canvas, createRoot } from "@react-three/fiber";
+import Header from "components/Header";
+import { CameraControls, MeshDistortMaterial, RoundedBox, useCubeCamera } from "@react-three/drei";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,7 +20,15 @@ function MyApp({ Component, pageProps }: AppProps) {
         authUrl: "/api/auth",
       }}
     >
-      <Component {...pageProps} />
+      {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
+        <Canvas>
+            <Scene />
+        </Canvas>
+      </div> */}
+      <div id="app" className="relative h-screen max-h-screen">
+        <Header />
+        <Component {...pageProps} />
+      </div>
     </ThirdwebProvider>
   );
 }

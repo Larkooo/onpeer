@@ -30,15 +30,8 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div>
-      {isLoggedIn ? (
-        <button onClick={() => logout()}>Logout</button>
-      ) : address ? (
-        <button onClick={() => login()}>Login</button>
-      ) : (
-        <ConnectWallet theme="dark" />
-      )}
-      <UploadFile
+    <div className="flex justify-center items-center h-full p-4 text-center">
+      {/* <UploadFile
         title="Let's upload your video"
         description="Once uploaded, your video will be stored on our peer to peer storage solution and you will then be prompted to mint your video NFT."
         onUpload={onUpload}
@@ -51,12 +44,10 @@ const Home: NextPage = () => {
           "video/x-matroska": [".mkv"],
           "video/x-flv": [".flv"],
         }}
-      />
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-
-      <pre>Connected Wallet: {address}</pre>
-      <pre>User: {JSON.stringify(user, undefined, 2) || "N/A"}</pre>
-      <pre>Secret: {secret || "N/A"}</pre>
+      /> */}
+      <h1 className="text-7xl font-bold">
+        Share your <span className="text-orange-600">video</span> with the <span className="text-green-500">world</span>, and <span className="text-orange-600">prove</span> it's yours.
+      </h1>
     </div>
   );
 };

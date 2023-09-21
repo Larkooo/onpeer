@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       latestBlockNumber: Contract.blockNumber,
     },
   });
-  const contract = await sdk.getContract(process.env.ONPEER_CONTRACT_ADDRESS!);
+  const contract = await sdk.getContract(process.env.NEXT_PUBLIC_ONPEER_CONTRACT_ADDRESS!);
 
   const latestBlockNumber = await sdk.getProvider().getBlockNumber();
   const events = await contract.events.getAllEvents({
