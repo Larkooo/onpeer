@@ -18,6 +18,7 @@ import {
   ShadowInnerIcon,
   UploadIcon,
 } from "@radix-ui/react-icons";
+import useUpload from "hooks/useUpload";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -43,35 +44,16 @@ export const UploadFile = ({
   const [uploading, setUploading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const [error, setError] = useState<string>();
-  const [files, setFiles] = useState<File[]>([]);
-
-  const onDrop = useCallback((files: File[]) => {
-    setFiles(files);
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+  const { error, files, getInputProps, getRootProps, isDragActive, removeFile } = useUpload({
+    accept: accept,
     maxFiles,
-    accept,
     maxSize,
-    multiple: maxFiles > 1,
-    onDropRejected(fileRejections, event) {
-      setError(fileRejections[0].errors[0].message);
-    },
   });
-
-  useEffect(() => {
-    if (!open) {
-      setFiles([]);
-      setError(undefined);
-    }
-  }, [open]);
 
   return (
     <Dialog onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">{button}</Button>
+       {button ?? <Button>Upload</Button>}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -93,7 +75,7 @@ export const UploadFile = ({
                 <span className="w-full inline-flex items-center justify-center gap-4">
                   <Cross2Icon
                     onClick={() =>
-                      setFiles((files) => files.filter((_, m) => i !== m))
+                      removeFile(f)
                     }
                   />
                   {f.name}{" "}

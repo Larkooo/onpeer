@@ -21,12 +21,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
-        <Canvas>
-            <Scene />
-        </Canvas>
+        <Scene />
       </div> */}
       <div id="app" className="relative h-screen max-h-screen">
-        <Header />
+        {/* <Header /> */}
         <Component {...pageProps} />
       </div>
     </ThirdwebProvider>

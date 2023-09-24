@@ -2,6 +2,12 @@ generator client {
     provider = "prisma-client-js"
 }
 
+generator typegraphql {
+    provider           = "typegraphql-prisma"
+    output             = "generated/type-graphql"
+    emitTranspiledCode = true
+}
+
 datasource db {
     provider  = "postgresql"
     url       = env("POSTGRES_PRISMA_URL") // uses connection pooling

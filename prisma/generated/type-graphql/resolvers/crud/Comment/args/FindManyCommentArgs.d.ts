@@ -1,0 +1,11 @@
+import { CommentOrderByWithRelationInput } from "../../../inputs/CommentOrderByWithRelationInput";
+import { CommentWhereInput } from "../../../inputs/CommentWhereInput";
+import { CommentWhereUniqueInput } from "../../../inputs/CommentWhereUniqueInput";
+export declare class FindManyCommentArgs {
+    where?: CommentWhereInput | undefined;
+    orderBy?: CommentOrderByWithRelationInput[] | undefined;
+    cursor?: CommentWhereUniqueInput | undefined;
+    take?: number | undefined;
+    skip?: number | undefined;
+    distinct?: Array<"text" | "userId" | "videoId" | "tx"> | undefined;
+}

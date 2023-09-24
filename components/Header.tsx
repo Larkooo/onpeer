@@ -46,8 +46,9 @@ const Header = () => {
         }}
         detailsBtn={() => (
           <Button
-            className="bg-orange-600 border-0 text-white hover:bg-orange-600 hover:text-white active:-mb-2 group"
-            variant="outline"
+            // className="bg-orange-600 bg-opacity-80 border-0 text-white hover:bg-orange-600 hover:text-white active:-mb-2 group"
+            // variant="outline"
+            className="group"
           >
             <CubeIcon className="mr-2 group-hover:animate-pulse" />
             {ens ?? (address && formatAddress(address))}

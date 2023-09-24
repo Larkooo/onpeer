@@ -1,0 +1,35 @@
+import type { GraphQLResolveInfo } from "graphql";
+import { AggregateCommentArgs } from "./args/AggregateCommentArgs";
+import { CreateManyCommentArgs } from "./args/CreateManyCommentArgs";
+import { CreateOneCommentArgs } from "./args/CreateOneCommentArgs";
+import { DeleteManyCommentArgs } from "./args/DeleteManyCommentArgs";
+import { DeleteOneCommentArgs } from "./args/DeleteOneCommentArgs";
+import { FindFirstCommentArgs } from "./args/FindFirstCommentArgs";
+import { FindFirstCommentOrThrowArgs } from "./args/FindFirstCommentOrThrowArgs";
+import { FindManyCommentArgs } from "./args/FindManyCommentArgs";
+import { FindUniqueCommentArgs } from "./args/FindUniqueCommentArgs";
+import { FindUniqueCommentOrThrowArgs } from "./args/FindUniqueCommentOrThrowArgs";
+import { GroupByCommentArgs } from "./args/GroupByCommentArgs";
+import { UpdateManyCommentArgs } from "./args/UpdateManyCommentArgs";
+import { UpdateOneCommentArgs } from "./args/UpdateOneCommentArgs";
+import { UpsertOneCommentArgs } from "./args/UpsertOneCommentArgs";
+import { Comment } from "../../../models/Comment";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateComment } from "../../outputs/AggregateComment";
+import { CommentGroupBy } from "../../outputs/CommentGroupBy";
+export declare class CommentCrudResolver {
+    aggregateComment(ctx: any, info: GraphQLResolveInfo, args: AggregateCommentArgs): Promise<AggregateComment>;
+    createManyComment(ctx: any, info: GraphQLResolveInfo, args: CreateManyCommentArgs): Promise<AffectedRowsOutput>;
+    createOneComment(ctx: any, info: GraphQLResolveInfo, args: CreateOneCommentArgs): Promise<Comment>;
+    deleteManyComment(ctx: any, info: GraphQLResolveInfo, args: DeleteManyCommentArgs): Promise<AffectedRowsOutput>;
+    deleteOneComment(ctx: any, info: GraphQLResolveInfo, args: DeleteOneCommentArgs): Promise<Comment | null>;
+    findFirstComment(ctx: any, info: GraphQLResolveInfo, args: FindFirstCommentArgs): Promise<Comment | null>;
+    findFirstCommentOrThrow(ctx: any, info: GraphQLResolveInfo, args: FindFirstCommentOrThrowArgs): Promise<Comment | null>;
+    comments(ctx: any, info: GraphQLResolveInfo, args: FindManyCommentArgs): Promise<Comment[]>;
+    comment(ctx: any, info: GraphQLResolveInfo, args: FindUniqueCommentArgs): Promise<Comment | null>;
+    getComment(ctx: any, info: GraphQLResolveInfo, args: FindUniqueCommentOrThrowArgs): Promise<Comment | null>;
+    groupByComment(ctx: any, info: GraphQLResolveInfo, args: GroupByCommentArgs): Promise<CommentGroupBy[]>;
+    updateManyComment(ctx: any, info: GraphQLResolveInfo, args: UpdateManyCommentArgs): Promise<AffectedRowsOutput>;
+    updateOneComment(ctx: any, info: GraphQLResolveInfo, args: UpdateOneCommentArgs): Promise<Comment | null>;
+    upsertOneComment(ctx: any, info: GraphQLResolveInfo, args: UpsertOneCommentArgs): Promise<Comment>;
+}

@@ -1,0 +1,35 @@
+import type { GraphQLResolveInfo } from "graphql";
+import { AggregateSyncArgs } from "./args/AggregateSyncArgs";
+import { CreateManySyncArgs } from "./args/CreateManySyncArgs";
+import { CreateOneSyncArgs } from "./args/CreateOneSyncArgs";
+import { DeleteManySyncArgs } from "./args/DeleteManySyncArgs";
+import { DeleteOneSyncArgs } from "./args/DeleteOneSyncArgs";
+import { FindFirstSyncArgs } from "./args/FindFirstSyncArgs";
+import { FindFirstSyncOrThrowArgs } from "./args/FindFirstSyncOrThrowArgs";
+import { FindManySyncArgs } from "./args/FindManySyncArgs";
+import { FindUniqueSyncArgs } from "./args/FindUniqueSyncArgs";
+import { FindUniqueSyncOrThrowArgs } from "./args/FindUniqueSyncOrThrowArgs";
+import { GroupBySyncArgs } from "./args/GroupBySyncArgs";
+import { UpdateManySyncArgs } from "./args/UpdateManySyncArgs";
+import { UpdateOneSyncArgs } from "./args/UpdateOneSyncArgs";
+import { UpsertOneSyncArgs } from "./args/UpsertOneSyncArgs";
+import { Sync } from "../../../models/Sync";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateSync } from "../../outputs/AggregateSync";
+import { SyncGroupBy } from "../../outputs/SyncGroupBy";
+export declare class SyncCrudResolver {
+    aggregateSync(ctx: any, info: GraphQLResolveInfo, args: AggregateSyncArgs): Promise<AggregateSync>;
+    createManySync(ctx: any, info: GraphQLResolveInfo, args: CreateManySyncArgs): Promise<AffectedRowsOutput>;
+    createOneSync(ctx: any, info: GraphQLResolveInfo, args: CreateOneSyncArgs): Promise<Sync>;
+    deleteManySync(ctx: any, info: GraphQLResolveInfo, args: DeleteManySyncArgs): Promise<AffectedRowsOutput>;
+    deleteOneSync(ctx: any, info: GraphQLResolveInfo, args: DeleteOneSyncArgs): Promise<Sync | null>;
+    findFirstSync(ctx: any, info: GraphQLResolveInfo, args: FindFirstSyncArgs): Promise<Sync | null>;
+    findFirstSyncOrThrow(ctx: any, info: GraphQLResolveInfo, args: FindFirstSyncOrThrowArgs): Promise<Sync | null>;
+    syncs(ctx: any, info: GraphQLResolveInfo, args: FindManySyncArgs): Promise<Sync[]>;
+    sync(ctx: any, info: GraphQLResolveInfo, args: FindUniqueSyncArgs): Promise<Sync | null>;
+    getSync(ctx: any, info: GraphQLResolveInfo, args: FindUniqueSyncOrThrowArgs): Promise<Sync | null>;
+    groupBySync(ctx: any, info: GraphQLResolveInfo, args: GroupBySyncArgs): Promise<SyncGroupBy[]>;
+    updateManySync(ctx: any, info: GraphQLResolveInfo, args: UpdateManySyncArgs): Promise<AffectedRowsOutput>;
+    updateOneSync(ctx: any, info: GraphQLResolveInfo, args: UpdateOneSyncArgs): Promise<Sync | null>;
+    upsertOneSync(ctx: any, info: GraphQLResolveInfo, args: UpsertOneSyncArgs): Promise<Sync>;
+}

@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VideoCountLikesArgs = exports.VideoCountCommentsArgs = exports.UserCountVideosArgs = exports.UserCountLikesArgs = exports.UserCountCommentsArgs = void 0;
+var UserCountCommentsArgs_1 = require("./UserCountCommentsArgs");
+Object.defineProperty(exports, "UserCountCommentsArgs", { enumerable: true, get: function () { return UserCountCommentsArgs_1.UserCountCommentsArgs; } });
+var UserCountLikesArgs_1 = require("./UserCountLikesArgs");
+Object.defineProperty(exports, "UserCountLikesArgs", { enumerable: true, get: function () { return UserCountLikesArgs_1.UserCountLikesArgs; } });
+var UserCountVideosArgs_1 = require("./UserCountVideosArgs");
+Object.defineProperty(exports, "UserCountVideosArgs", { enumerable: true, get: function () { return UserCountVideosArgs_1.UserCountVideosArgs; } });
+var VideoCountCommentsArgs_1 = require("./VideoCountCommentsArgs");
+Object.defineProperty(exports, "VideoCountCommentsArgs", { enumerable: true, get: function () { return VideoCountCommentsArgs_1.VideoCountCommentsArgs; } });
+var VideoCountLikesArgs_1 = require("./VideoCountLikesArgs");
+Object.defineProperty(exports, "VideoCountLikesArgs", { enumerable: true, get: function () { return VideoCountLikesArgs_1.VideoCountLikesArgs; } });

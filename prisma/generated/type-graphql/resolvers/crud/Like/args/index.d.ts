@@ -1,0 +1,14 @@
+export { AggregateLikeArgs } from "./AggregateLikeArgs";
+export { CreateManyLikeArgs } from "./CreateManyLikeArgs";
+export { CreateOneLikeArgs } from "./CreateOneLikeArgs";
+export { DeleteManyLikeArgs } from "./DeleteManyLikeArgs";
+export { DeleteOneLikeArgs } from "./DeleteOneLikeArgs";
+export { FindFirstLikeArgs } from "./FindFirstLikeArgs";
+export { FindFirstLikeOrThrowArgs } from "./FindFirstLikeOrThrowArgs";
+export { FindManyLikeArgs } from "./FindManyLikeArgs";
+export { FindUniqueLikeArgs } from "./FindUniqueLikeArgs";
+export { FindUniqueLikeOrThrowArgs } from "./FindUniqueLikeOrThrowArgs";
+export { GroupByLikeArgs } from "./GroupByLikeArgs";
+export { UpdateManyLikeArgs } from "./UpdateManyLikeArgs";
+export { UpdateOneLikeArgs } from "./UpdateOneLikeArgs";
+export { UpsertOneLikeArgs } from "./UpsertOneLikeArgs";
