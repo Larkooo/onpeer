@@ -6,6 +6,7 @@ const TypeGraphQL = tslib_1.__importStar(require("type-graphql"));
 var VideoScalarFieldEnum;
 (function (VideoScalarFieldEnum) {
     VideoScalarFieldEnum["id"] = "id";
+    VideoScalarFieldEnum["tokenId"] = "tokenId";
     VideoScalarFieldEnum["title"] = "title";
     VideoScalarFieldEnum["description"] = "description";
     VideoScalarFieldEnum["authorId"] = "authorId";

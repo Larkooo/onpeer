@@ -4,7 +4,7 @@ import { VideoWhereInput } from "../../../inputs/VideoWhereInput";
 export declare class GroupByVideoArgs {
     where?: VideoWhereInput | undefined;
     orderBy?: VideoOrderByWithAggregationInput[] | undefined;
-    by: Array<"id" | "title" | "description" | "authorId" | "mintTx" | "createdAt">;
+    by: Array<"id" | "tokenId" | "title" | "description" | "authorId" | "mintTx" | "createdAt">;
     having?: VideoScalarWhereWithAggregatesInput | undefined;
     take?: number | undefined;
     skip?: number | undefined;

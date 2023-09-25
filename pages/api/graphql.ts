@@ -10,12 +10,6 @@ import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { PrismaClient } from "@prisma/client";
 
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
-
 const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
   resolvers: generatedResolvers,
 });
@@ -23,11 +17,11 @@ const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  plugins: [ApolloServerPluginLandingPageGraphQLPlayground() as any]
-})
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground() as any],
+});
 
 const handler = startServerAndCreateNextHandler(apolloServer, {
   context: async (req, res) => ({ req, res, prisma: new PrismaClient() }),
-})
+});
 
 export default handler;

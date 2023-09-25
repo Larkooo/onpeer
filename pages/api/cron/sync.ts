@@ -19,26 +19,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     toBlock: latestBlockNumber,
   });
 
-  let tx: any = [];
+  let tx: any[] = [];
   for (const event of events) {
     const name = event.eventName;
     const data = event.data;
 
     switch (name) {
       case "VideoAssetCreated":
-        tx.append(
-          prisma.video.update({
+        tx.push(
+          prisma.video.upsert({
             where: { id: data.uid },
-            data: {
+            update: {
               title: data.title,
               description: data.description,
+              authorId: data.author,
               mintTx: event.transaction.transactionHash,
+              tokenId: data.tokenId.toHexString(),
+            },
+            create: {
+              id: data.uid,
+              title: data.title,
+              description: data.description,
+              authorId: data.author,
+              createdAt: new Date((await sdk.getProvider().getBlock(data.blockNumber)).timestamp),
+              mintTx: event.transaction.transactionHash,
+              tokenId: data.tokenId.toHexString(),
             },
           })
         );
         break;
       case "VideoAssetMetadataUpdated":
-        tx.append(
+        tx.push(
           prisma.video.update({
             where: { id: data.uid },
             data: {
@@ -49,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         break;
       case "VideoAssetLiked":
-        tx.append(
+        tx.push(
           prisma.like.upsert({
             where: {
               userId_videoId: {
@@ -67,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         break;
       case "VideoAssetUnliked":
-        tx.append(
+        tx.push(
           prisma.like.delete({
             where: {
               userId_videoId: {
@@ -79,12 +90,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         break;
       case "VideoAssetCommented":
-        tx.append(
+        tx.push(
           prisma.comment.create({
             data: {
               videoId: data.uid,
-              userId: data.commenter,
-              text: data.text,
+              userId: data.author,
+              text: data.comment,
               tx: event.transaction.transactionHash,
             },
           })

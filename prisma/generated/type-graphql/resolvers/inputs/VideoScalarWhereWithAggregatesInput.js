@@ -34,6 +34,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", StringWithAggregatesFilter_1.StringWithAggregatesFilter)
 ], VideoScalarWhereWithAggregatesInput.prototype, "id", void 0);
 tslib_1.__decorate([
+    TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter_1.StringNullableWithAggregatesFilter, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", StringNullableWithAggregatesFilter_1.StringNullableWithAggregatesFilter)
+], VideoScalarWhereWithAggregatesInput.prototype, "tokenId", void 0);
+tslib_1.__decorate([
     TypeGraphQL.Field(_type => StringWithAggregatesFilter_1.StringWithAggregatesFilter, {
         nullable: true
     }),

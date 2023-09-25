@@ -8,12 +8,12 @@ interface Contract {
 
 const contractMumbai: Contract = {
   chain: Mumbai,
-  address: "0x93197192FDD5e708cb72b97652f2AAE00A44F4cB",
-  blockNumber: 40359620,
+  address: "0xE3a532CFB1519941FB9A2C46b7d535FA19c10aaF",
+  blockNumber: 40505728,
 };
 
 const Contracts: Record<string, Contract> = {
-  "0x93197192FDD5e708cb72b97652f2AAE00A44F4cB": contractMumbai,
+  "0xE3a532CFB1519941FB9A2C46b7d535FA19c10aaF": contractMumbai,
 };
 
 export const Contract =

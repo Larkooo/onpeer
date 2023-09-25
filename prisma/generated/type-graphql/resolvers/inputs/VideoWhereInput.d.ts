@@ -9,6 +9,7 @@ export declare class VideoWhereInput {
     OR?: VideoWhereInput[] | undefined;
     NOT?: VideoWhereInput[] | undefined;
     id?: StringFilter | undefined;
+    tokenId?: StringNullableFilter | undefined;
     title?: StringFilter | undefined;
     description?: StringFilter | undefined;
     authorId?: StringFilter | undefined;

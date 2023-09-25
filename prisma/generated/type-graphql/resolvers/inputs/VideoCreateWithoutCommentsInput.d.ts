@@ -2,6 +2,7 @@ import { LikeCreateNestedManyWithoutVideoInput } from "../inputs/LikeCreateNeste
 import { UserCreateNestedOneWithoutVideosInput } from "../inputs/UserCreateNestedOneWithoutVideosInput";
 export declare class VideoCreateWithoutCommentsInput {
     id: string;
+    tokenId?: string | undefined;
     title: string;
     description: string;
     mintTx?: string | undefined;

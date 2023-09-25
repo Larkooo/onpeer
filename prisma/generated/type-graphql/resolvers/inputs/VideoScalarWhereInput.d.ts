@@ -6,6 +6,7 @@ export declare class VideoScalarWhereInput {
     OR?: VideoScalarWhereInput[] | undefined;
     NOT?: VideoScalarWhereInput[] | undefined;
     id?: StringFilter | undefined;
+    tokenId?: StringNullableFilter | undefined;
     title?: StringFilter | undefined;
     description?: StringFilter | undefined;
     authorId?: StringFilter | undefined;

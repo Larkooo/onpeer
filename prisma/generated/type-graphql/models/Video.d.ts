@@ -4,6 +4,7 @@ import { User } from "../models/User";
 import { VideoCount } from "../resolvers/outputs/VideoCount";
 export declare class Video {
     id: string;
+    tokenId?: string | null;
     title: string;
     description: string;
     author?: User;

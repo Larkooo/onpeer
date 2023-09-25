@@ -4,6 +4,7 @@ import { SortOrderInput } from "../inputs/SortOrderInput";
 import { UserOrderByWithRelationInput } from "../inputs/UserOrderByWithRelationInput";
 export declare class VideoOrderByWithRelationInput {
     id?: "asc" | "desc" | undefined;
+    tokenId?: SortOrderInput | undefined;
     title?: "asc" | "desc" | undefined;
     description?: "asc" | "desc" | undefined;
     authorId?: "asc" | "desc" | undefined;

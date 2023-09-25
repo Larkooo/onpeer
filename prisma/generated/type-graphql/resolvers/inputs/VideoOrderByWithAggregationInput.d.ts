@@ -4,6 +4,7 @@ import { VideoMaxOrderByAggregateInput } from "../inputs/VideoMaxOrderByAggregat
 import { VideoMinOrderByAggregateInput } from "../inputs/VideoMinOrderByAggregateInput";
 export declare class VideoOrderByWithAggregationInput {
     id?: "asc" | "desc" | undefined;
+    tokenId?: SortOrderInput | undefined;
     title?: "asc" | "desc" | undefined;
     description?: "asc" | "desc" | undefined;
     authorId?: "asc" | "desc" | undefined;

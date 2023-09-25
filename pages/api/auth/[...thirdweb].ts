@@ -12,7 +12,7 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
   // the Auth flow will still work.
   callbacks: {
     onLogin: async (address) => {
-      prisma.user.upsert({
+      await prisma.user.upsert({
         where: { id: address },
         update: {},
         create: {

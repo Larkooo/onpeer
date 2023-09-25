@@ -6,6 +6,7 @@ export declare class VideoScalarWhereWithAggregatesInput {
     OR?: VideoScalarWhereWithAggregatesInput[] | undefined;
     NOT?: VideoScalarWhereWithAggregatesInput[] | undefined;
     id?: StringWithAggregatesFilter | undefined;
+    tokenId?: StringNullableWithAggregatesFilter | undefined;
     title?: StringWithAggregatesFilter | undefined;
     description?: StringWithAggregatesFilter | undefined;
     authorId?: StringWithAggregatesFilter | undefined;

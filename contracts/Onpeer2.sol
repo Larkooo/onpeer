@@ -11,7 +11,8 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 using Counters for Counters.Counter;
 
 struct VideoAsset {
-    uint256 uid;
+    string uid;
+    uint256 tokenId;
     string title;
     string description;
     Counters.Counter likes;
@@ -19,7 +20,7 @@ struct VideoAsset {
 }
 
 struct VideoAssetComment {
-    uint256 uid;
+    string uid;
     string comment;
     address author;
 }
@@ -35,26 +36,27 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
     // likeHash => isLiked
     mapping(uint256 => bool) private videoAssetLiked;
     // uid => comments
-    mapping(uint256 => VideoAssetComment[]) private videoAssetComments;
+    mapping(string => VideoAssetComment[]) private videoAssetComments;
 
     event VideoAssetCreated(
-        uint256 uid,
+        string uid,
+        uint256 tokenId,
         string title,
         string description,
         address author
     );
 
     event VideoAssetMetadataUpdated(
-        uint256 uid,
+        string uid,
         string title,
         string description,
         address author
     );
 
-    event VideoAssetLiked(uint256 uid, address liker);
-    event VideoAssetUnliked(uint256 uid, address liker);
+    event VideoAssetLiked(string uid, address liker);
+    event VideoAssetUnliked(string uid, address liker);
 
-    event VideoAssetCommented(uint256 uid, string comment, address author);
+    event VideoAssetCommented(string uid, string comment, address author);
 
     constructor(
         address _defaultAdmin,
@@ -122,6 +124,7 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
         // Mint tokens.
         _safeMint(receiver, tokenIdToMint);
         videoAssets[tokenIdToMint] = VideoAsset(
+            _req.uri,
             tokenIdToMint,
             "",
             "",
@@ -130,10 +133,11 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
         );
 
         emit TokensMintedWithSignature(signer, receiver, tokenIdToMint, _req);
+        emit VideoAssetCreated(_req.uri, tokenIdToMint, "", "", receiver);
     }
 
     /// @dev Mints tokens according to the provided mint request.
-    function mintWithSignature(
+    function mint(
         MintRequest calldata _req,
         VideoAssetInit calldata _videoAssetInit,
         bytes calldata _signature
@@ -156,6 +160,7 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
         // Mint tokens.
         _safeMint(receiver, tokenIdToMint);
         videoAssets[tokenIdToMint] = VideoAsset(
+            _req.uri,
             tokenIdToMint,
             _videoAssetInit.title,
             _videoAssetInit.description,
@@ -164,6 +169,7 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
         );
 
         emit TokensMintedWithSignature(signer, receiver, tokenIdToMint, _req);
+        emit VideoAssetCreated(_req.uri, tokenIdToMint, _videoAssetInit.title, _videoAssetInit.description, receiver);
     }
 
     function setVideoAssetMetadata(
@@ -171,14 +177,14 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
         string calldata _title,
         string calldata _description
     ) external {
-        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
+        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
         require(msg.sender == ownerOf(_tokenId), "Not authorized");
 
         videoAssets[_tokenId].title = _title;
         videoAssets[_tokenId].description = _description;
 
         emit VideoAssetMetadataUpdated(
-            _tokenId,
+            videoAssets[_tokenId].uid,
             _title,
             _description,
             msg.sender
@@ -186,9 +192,9 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
     }
 
     function like(uint256 _tokenId) external {
-        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
+        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
         uint256 likeHash = uint256(
-            keccak256(abi.encodePacked(_tokenId, msg.sender))
+            keccak256(abi.encodePacked(videoAssets[_tokenId].uid, msg.sender))
         );
 
         require(!videoAssetLiked[likeHash], "Already liked");
@@ -196,13 +202,13 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
         videoAssets[_tokenId].likes.increment();
         videoAssetLiked[likeHash] = true;
 
-        emit VideoAssetLiked(_tokenId, msg.sender);
+        emit VideoAssetLiked(videoAssets[_tokenId].uid, msg.sender);
     }
 
     function undoLike(uint256 _tokenId) external {
-        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
+        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
         uint256 likeHash = uint256(
-            keccak256(abi.encodePacked(_tokenId, msg.sender))
+            keccak256(abi.encodePacked(videoAssets[_tokenId].uid, msg.sender))
         );
 
         require(videoAssetLiked[likeHash], "Not liked");
@@ -210,18 +216,18 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
         videoAssets[_tokenId].likes.decrement();
         videoAssetLiked[likeHash] = false;
 
-        emit VideoAssetUnliked(_tokenId, msg.sender);
+        emit VideoAssetUnliked(videoAssets[_tokenId].uid, msg.sender);
     }
 
     function comment(uint256 _tokenId, string calldata _comment) external {
-        require(videoAssets[_tokenId].uid != 0, "Token does not exist");
+        require(videoAssets[_tokenId].tokenId != 0, "Token does not exist");
 
-        videoAssetComments[_tokenId].push(
-            VideoAssetComment(_tokenId, _comment, msg.sender)
+        videoAssetComments[videoAssets[_tokenId].uid].push(
+            VideoAssetComment(videoAssets[_tokenId].uid, _comment, msg.sender)
         );
         videoAssets[_tokenId].comments.increment();
 
-        emit VideoAssetCommented(_tokenId, _comment, msg.sender);
+        emit VideoAssetCommented(videoAssets[_tokenId].uid, _comment, msg.sender);
     }
 
     function videoAsset(
@@ -233,7 +239,7 @@ contract Onpeer2 is ERC721, Ownable, PrimarySale, SignatureMintERC721 {
     function comments(
         uint256 _tokenId
     ) external view returns (VideoAssetComment[] memory) {
-        return videoAssetComments[_tokenId];
+        return videoAssetComments[videoAssets[_tokenId].uid];
     }
 
     /// @dev Returns whether primary sale recipient can be set in the given execution context.

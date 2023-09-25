@@ -48,6 +48,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
+  console.log(user);
+
   // Retrieve file upload from form data using formidable
   const data = await new Promise((resolve, reject) => {
     const form = formidable();
@@ -74,7 +76,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ],
   });
 
-  prisma.video.create({
+  await prisma.video.create({
     data: {
       id: result[0].id,
       title: file.originalFilename!,
@@ -84,7 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  const onpeer = await sdk.getContract(process.env.ONPEER_CONTRACT_ADDRESS!);
+  const onpeer = await sdk.getContract(Contract.address!);
   const signature = await onpeer.erc721.signature.generate({
     to: user.address,
     metadata: result[0].id,

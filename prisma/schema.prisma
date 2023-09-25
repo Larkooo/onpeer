@@ -49,6 +49,7 @@ model Like {
 
 model Video {
     id          String    @id
+    tokenId     String?
     title       String
     description String
     author      User      @relation(fields: [authorId], references: [id])

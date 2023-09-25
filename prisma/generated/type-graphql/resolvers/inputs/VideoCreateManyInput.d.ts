@@ -1,5 +1,6 @@
 export declare class VideoCreateManyInput {
     id: string;
+    tokenId?: string | undefined;
     title: string;
     description: string;
     authorId: string;

@@ -29,7 +29,7 @@ interface UploadFileProps {
   accept?: Record<string, string[]>;
   maxFiles?: number;
   maxSize?: number;
-  onUpload: (files: File[]) => void;
+  onUpload: (files: File[]) => Promise<void>;
 }
 
 export const UploadFile = ({
@@ -44,14 +44,20 @@ export const UploadFile = ({
   const [uploading, setUploading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const { error, files, getInputProps, getRootProps, isDragActive, removeFile } = useUpload({
+  const { error, files, getInputProps, getRootProps, isDragActive, removeFile, clear } = useUpload({
     accept: accept,
     maxFiles,
     maxSize,
   });
 
+  useEffect(() => {
+    if (!open) {
+      clear();
+    }
+  }, [open]);
+
   return (
-    <Dialog onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
        {button ?? <Button>Upload</Button>}
       </DialogTrigger>
@@ -72,7 +78,7 @@ export const UploadFile = ({
           {files.length === 0 && <input {...getInputProps()} />}
           {files.length > 0
             ? files.map((f, i) => (
-                <span className="w-full inline-flex items-center justify-center gap-4">
+                <span key={f.name} className="w-full inline-flex items-center justify-center gap-4">
                   <Cross2Icon
                     onClick={() =>
                       removeFile(f)
@@ -89,15 +95,13 @@ export const UploadFile = ({
           <div className="text-xs text-gray-400">
             {Object.values(accept as any).join(", ")} supported.
           </div>
-          <DialogClose>
-            <Button className="text-xs" variant="outline">
+            <Button onClick={() => setOpen(false)} className="text-xs" variant="outline" >
               Cancel
             </Button>
-          </DialogClose>
           <Button
-            onClick={() => {
+            onClick={async () => {
               setUploading(true);
-              onUpload(files);
+              await onUpload(files); 
               setUploading(false);
             }}
             className="text-xs"

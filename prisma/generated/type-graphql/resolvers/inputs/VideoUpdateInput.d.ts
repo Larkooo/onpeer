@@ -6,6 +6,7 @@ import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOpe
 import { UserUpdateOneRequiredWithoutVideosNestedInput } from "../inputs/UserUpdateOneRequiredWithoutVideosNestedInput";
 export declare class VideoUpdateInput {
     id?: StringFieldUpdateOperationsInput | undefined;
+    tokenId?: NullableStringFieldUpdateOperationsInput | undefined;
     title?: StringFieldUpdateOperationsInput | undefined;
     description?: StringFieldUpdateOperationsInput | undefined;
     mintTx?: NullableStringFieldUpdateOperationsInput | undefined;

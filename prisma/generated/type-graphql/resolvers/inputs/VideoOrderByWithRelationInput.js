@@ -17,6 +17,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", String)
 ], VideoOrderByWithRelationInput.prototype, "id", void 0);
 tslib_1.__decorate([
+    TypeGraphQL.Field(_type => SortOrderInput_1.SortOrderInput, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", SortOrderInput_1.SortOrderInput)
+], VideoOrderByWithRelationInput.prototype, "tokenId", void 0);
+tslib_1.__decorate([
     TypeGraphQL.Field(_type => SortOrder_1.SortOrder, {
         nullable: true
     }),

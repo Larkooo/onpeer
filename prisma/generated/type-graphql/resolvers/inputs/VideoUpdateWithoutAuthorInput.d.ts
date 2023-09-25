@@ -5,6 +5,7 @@ import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStri
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 export declare class VideoUpdateWithoutAuthorInput {
     id?: StringFieldUpdateOperationsInput | undefined;
+    tokenId?: NullableStringFieldUpdateOperationsInput | undefined;
     title?: StringFieldUpdateOperationsInput | undefined;
     description?: StringFieldUpdateOperationsInput | undefined;
     mintTx?: NullableStringFieldUpdateOperationsInput | undefined;
