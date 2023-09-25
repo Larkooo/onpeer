@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { LapTimerIcon } from "@radix-ui/react-icons";
 
 const Dashboard = () => {
-    return <div className="p-4">
+    return <div className="flex flex-col p-4 gap-2">
         <Alert>
             <LapTimerIcon className="h-8 w-8" />
             <div className="ml-4">
@@ -11,6 +11,9 @@ const Dashboard = () => {
             </div>
         </Alert>
         <h1 className="text-4xl font-semibold">Your videos</h1>
+        <div className="grid">
+
+        </div>
     </div>;
 }
 

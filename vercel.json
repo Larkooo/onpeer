@@ -2,10 +2,10 @@
   "crons": [
     {
       "path": "/api/sync",
-      "schedule": "0 0 * * *"
+      "schedule": "* * * * *"
     },
     {
-      "path": "/api/prune",
+      "path": "/api/purge",
       "schedule": "0 0 * * *"
     }
   ]
