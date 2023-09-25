@@ -1,0 +1,14 @@
+export { AggregateVideoArgs } from "./AggregateVideoArgs";
+export { CreateManyVideoArgs } from "./CreateManyVideoArgs";
+export { CreateOneVideoArgs } from "./CreateOneVideoArgs";
+export { DeleteManyVideoArgs } from "./DeleteManyVideoArgs";
+export { DeleteOneVideoArgs } from "./DeleteOneVideoArgs";
+export { FindFirstVideoArgs } from "./FindFirstVideoArgs";
+export { FindFirstVideoOrThrowArgs } from "./FindFirstVideoOrThrowArgs";
+export { FindManyVideoArgs } from "./FindManyVideoArgs";
+export { FindUniqueVideoArgs } from "./FindUniqueVideoArgs";
+export { FindUniqueVideoOrThrowArgs } from "./FindUniqueVideoOrThrowArgs";
+export { GroupByVideoArgs } from "./GroupByVideoArgs";
+export { UpdateManyVideoArgs } from "./UpdateManyVideoArgs";
+export { UpdateOneVideoArgs } from "./UpdateOneVideoArgs";
+export { UpsertOneVideoArgs } from "./UpsertOneVideoArgs";
