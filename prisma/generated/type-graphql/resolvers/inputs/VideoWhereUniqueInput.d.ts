@@ -1,5 +1,6 @@
 import { CommentListRelationFilter } from "../inputs/CommentListRelationFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
+import { JsonNullableFilter } from "../inputs/JsonNullableFilter";
 import { LikeListRelationFilter } from "../inputs/LikeListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
@@ -15,6 +16,7 @@ export declare class VideoWhereUniqueInput {
     description?: StringFilter | undefined;
     authorId?: StringFilter | undefined;
     mintTx?: StringNullableFilter | undefined;
+    mintSignature?: JsonNullableFilter | undefined;
     createdAt?: DateTimeFilter | undefined;
     author?: UserRelationFilter | undefined;
     comments?: CommentListRelationFilter | undefined;

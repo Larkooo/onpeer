@@ -9,6 +9,7 @@ export declare class VideoOrderByWithRelationInput {
     description?: "asc" | "desc" | undefined;
     authorId?: "asc" | "desc" | undefined;
     mintTx?: SortOrderInput | undefined;
+    mintSignature?: SortOrderInput | undefined;
     createdAt?: "asc" | "desc" | undefined;
     author?: UserOrderByWithRelationInput | undefined;
     comments?: CommentOrderByRelationAggregateInput | undefined;

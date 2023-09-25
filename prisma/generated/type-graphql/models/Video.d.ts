@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { Comment } from "../models/Comment";
 import { Like } from "../models/Like";
 import { User } from "../models/User";
@@ -12,6 +13,7 @@ export declare class Video {
     comments?: Comment[];
     likes?: Like[];
     mintTx?: string | null;
+    mintSignature?: Prisma.JsonValue | null;
     createdAt: Date;
     _count?: VideoCount | null;
 }

@@ -1,4 +1,5 @@
 import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFilter";
+import { JsonNullableWithAggregatesFilter } from "../inputs/JsonNullableWithAggregatesFilter";
 import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 export declare class VideoScalarWhereWithAggregatesInput {
@@ -11,5 +12,6 @@ export declare class VideoScalarWhereWithAggregatesInput {
     description?: StringWithAggregatesFilter | undefined;
     authorId?: StringWithAggregatesFilter | undefined;
     mintTx?: StringNullableWithAggregatesFilter | undefined;
+    mintSignature?: JsonNullableWithAggregatesFilter | undefined;
     createdAt?: DateTimeWithAggregatesFilter | undefined;
 }

@@ -5,6 +5,7 @@ exports.VideoScalarWhereInput = void 0;
 const tslib_1 = require("tslib");
 const TypeGraphQL = tslib_1.__importStar(require("type-graphql"));
 const DateTimeFilter_1 = require("../inputs/DateTimeFilter");
+const JsonNullableFilter_1 = require("../inputs/JsonNullableFilter");
 const StringFilter_1 = require("../inputs/StringFilter");
 const StringNullableFilter_1 = require("../inputs/StringNullableFilter");
 let VideoScalarWhereInput = exports.VideoScalarWhereInput = VideoScalarWhereInput_1 = class VideoScalarWhereInput {
@@ -63,6 +64,12 @@ tslib_1.__decorate([
     }),
     tslib_1.__metadata("design:type", StringNullableFilter_1.StringNullableFilter)
 ], VideoScalarWhereInput.prototype, "mintTx", void 0);
+tslib_1.__decorate([
+    TypeGraphQL.Field(_type => JsonNullableFilter_1.JsonNullableFilter, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", JsonNullableFilter_1.JsonNullableFilter)
+], VideoScalarWhereInput.prototype, "mintSignature", void 0);
 tslib_1.__decorate([
     TypeGraphQL.Field(_type => DateTimeFilter_1.DateTimeFilter, {
         nullable: true

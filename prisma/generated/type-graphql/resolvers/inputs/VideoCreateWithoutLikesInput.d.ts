@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { CommentCreateNestedManyWithoutVideoInput } from "../inputs/CommentCreateNestedManyWithoutVideoInput";
 import { UserCreateNestedOneWithoutVideosInput } from "../inputs/UserCreateNestedOneWithoutVideosInput";
 export declare class VideoCreateWithoutLikesInput {
@@ -6,6 +7,7 @@ export declare class VideoCreateWithoutLikesInput {
     title: string;
     description: string;
     mintTx?: string | undefined;
+    mintSignature?: Prisma.InputJsonValue | undefined;
     createdAt?: Date | undefined;
     author: UserCreateNestedOneWithoutVideosInput;
     comments?: CommentCreateNestedManyWithoutVideoInput | undefined;

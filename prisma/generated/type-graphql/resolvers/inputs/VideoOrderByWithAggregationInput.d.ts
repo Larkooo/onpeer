@@ -9,6 +9,7 @@ export declare class VideoOrderByWithAggregationInput {
     description?: "asc" | "desc" | undefined;
     authorId?: "asc" | "desc" | undefined;
     mintTx?: SortOrderInput | undefined;
+    mintSignature?: SortOrderInput | undefined;
     createdAt?: "asc" | "desc" | undefined;
     _count?: VideoCountOrderByAggregateInput | undefined;
     _max?: VideoMaxOrderByAggregateInput | undefined;

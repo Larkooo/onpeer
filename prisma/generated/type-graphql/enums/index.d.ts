@@ -1,5 +1,7 @@
 export { CommentScalarFieldEnum } from "./CommentScalarFieldEnum";
+export { JsonNullValueFilter } from "./JsonNullValueFilter";
 export { LikeScalarFieldEnum } from "./LikeScalarFieldEnum";
+export { NullableJsonNullValueInput } from "./NullableJsonNullValueInput";
 export { NullsOrder } from "./NullsOrder";
 export { QueryMode } from "./QueryMode";
 export { SortOrder } from "./SortOrder";

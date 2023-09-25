@@ -5,6 +5,7 @@ export declare class VideoCountAggregate {
     description: number;
     authorId: number;
     mintTx: number;
+    mintSignature: number;
     createdAt: number;
     _all: number;
 }

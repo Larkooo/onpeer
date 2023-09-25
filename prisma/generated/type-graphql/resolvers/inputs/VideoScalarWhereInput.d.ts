@@ -1,4 +1,5 @@
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
+import { JsonNullableFilter } from "../inputs/JsonNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
 export declare class VideoScalarWhereInput {
@@ -11,5 +12,6 @@ export declare class VideoScalarWhereInput {
     description?: StringFilter | undefined;
     authorId?: StringFilter | undefined;
     mintTx?: StringNullableFilter | undefined;
+    mintSignature?: JsonNullableFilter | undefined;
     createdAt?: DateTimeFilter | undefined;
 }

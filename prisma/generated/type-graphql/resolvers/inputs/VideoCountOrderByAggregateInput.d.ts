@@ -5,5 +5,6 @@ export declare class VideoCountOrderByAggregateInput {
     description?: "asc" | "desc" | undefined;
     authorId?: "asc" | "desc" | undefined;
     mintTx?: "asc" | "desc" | undefined;
+    mintSignature?: "asc" | "desc" | undefined;
     createdAt?: "asc" | "desc" | undefined;
 }

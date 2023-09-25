@@ -57,5 +57,7 @@ model Video {
     comments    Comment[]
     likes       Like[]
     mintTx      String?
+    /// @TypeGraphQL.omit(output: true)
+    mintSignature Json?
     createdAt   DateTime  @default(now())
 }

@@ -21,6 +21,7 @@ import { BigNumber } from "ethers";
 import { Contract } from "constants/contracts";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const address = useAddress();
@@ -29,6 +30,7 @@ const Home: NextPage = () => {
   const [secret, setSecret] = useState();
   const { contract } = useContract(Contract.address!);
   const { toast } = useToast();
+  const { push } = useRouter();
 
   const onUpload = async (files: File[]) => {
     const data = new FormData();
@@ -39,17 +41,23 @@ const Home: NextPage = () => {
       body: data,
     });
     const signature: SignedPayload721WithQuantitySignature = await res.json();
-    console.log(signature);
 
-    await contract!.erc721.signature.mint(signature);
+    
     toast({
       title: "Video: Uploaded",
       description: "Mint your video to make it persistent.",
       action: (
-        <ToastAction altText="Mint" onClick={() => {}}>
-          Mint
+        <ToastAction
+          className="bg-orange-600 text-white hover:bg-orange-500 px-5 gap-2"
+          altText="Mint"
+          onClick={async () => {
+            await contract!.erc721.signature.mint(signature);
+          }}
+        >
+          Mint <Pencil1Icon />
         </ToastAction>
       ),
+      duration: 1000**1000*1000
     });
   };
 
@@ -61,13 +69,16 @@ const Home: NextPage = () => {
         <ToastAction
           className="bg-orange-600 text-white hover:bg-orange-500 px-5 gap-2"
           altText="Mint"
-          onClick={() => {}}
+          onClick={async () => {
+            
+          }}
         >
           Mint <Pencil1Icon />
         </ToastAction>
       ),
-      duration: 1000**1000*1000
+      duration: 1000**1000**1000
     });
+    console.log("toat")
   }, []);
 
   return (
@@ -111,7 +122,7 @@ const Home: NextPage = () => {
         ) : (
           <Connect />
         )}
-        <Button variant="outline">Your videos</Button>
+        <Button onClick={() => push("/dashboard")} variant="outline">Your videos</Button>
       </div>
     </div>
   );

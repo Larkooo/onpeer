@@ -47,6 +47,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", SortOrderInput_1.SortOrderInput)
 ], VideoOrderByWithRelationInput.prototype, "mintTx", void 0);
 tslib_1.__decorate([
+    TypeGraphQL.Field(_type => SortOrderInput_1.SortOrderInput, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", SortOrderInput_1.SortOrderInput)
+], VideoOrderByWithRelationInput.prototype, "mintSignature", void 0);
+tslib_1.__decorate([
     TypeGraphQL.Field(_type => SortOrder_1.SortOrder, {
         nullable: true
     }),

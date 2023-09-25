@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { CommentUpdateManyWithoutVideoNestedInput } from "../inputs/CommentUpdateManyWithoutVideoNestedInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { LikeUpdateManyWithoutVideoNestedInput } from "../inputs/LikeUpdateManyWithoutVideoNestedInput";
@@ -9,6 +10,7 @@ export declare class VideoUpdateWithoutAuthorInput {
     title?: StringFieldUpdateOperationsInput | undefined;
     description?: StringFieldUpdateOperationsInput | undefined;
     mintTx?: NullableStringFieldUpdateOperationsInput | undefined;
+    mintSignature?: Prisma.InputJsonValue | undefined;
     createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
     comments?: CommentUpdateManyWithoutVideoNestedInput | undefined;
     likes?: LikeUpdateManyWithoutVideoNestedInput | undefined;

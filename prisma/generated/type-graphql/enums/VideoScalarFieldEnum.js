@@ -11,6 +11,7 @@ var VideoScalarFieldEnum;
     VideoScalarFieldEnum["description"] = "description";
     VideoScalarFieldEnum["authorId"] = "authorId";
     VideoScalarFieldEnum["mintTx"] = "mintTx";
+    VideoScalarFieldEnum["mintSignature"] = "mintSignature";
     VideoScalarFieldEnum["createdAt"] = "createdAt";
 })(VideoScalarFieldEnum || (exports.VideoScalarFieldEnum = VideoScalarFieldEnum = {}));
 TypeGraphQL.registerEnumType(VideoScalarFieldEnum, {

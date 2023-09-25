@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 export declare class VideoCreateManyInput {
     id: string;
     tokenId?: string | undefined;
@@ -5,5 +6,6 @@ export declare class VideoCreateManyInput {
     description: string;
     authorId: string;
     mintTx?: string | undefined;
+    mintSignature?: Prisma.InputJsonValue | undefined;
     createdAt?: Date | undefined;
 }

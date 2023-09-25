@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoCreateWithoutAuthorInput = void 0;
 const tslib_1 = require("tslib");
 const TypeGraphQL = tslib_1.__importStar(require("type-graphql"));
+const GraphQLScalars = tslib_1.__importStar(require("graphql-scalars"));
+const client_1 = require("@prisma/client");
 const CommentCreateNestedManyWithoutVideoInput_1 = require("../inputs/CommentCreateNestedManyWithoutVideoInput");
 const LikeCreateNestedManyWithoutVideoInput_1 = require("../inputs/LikeCreateNestedManyWithoutVideoInput");
 let VideoCreateWithoutAuthorInput = exports.VideoCreateWithoutAuthorInput = class VideoCreateWithoutAuthorInput {
@@ -37,6 +39,12 @@ tslib_1.__decorate([
     }),
     tslib_1.__metadata("design:type", String)
 ], VideoCreateWithoutAuthorInput.prototype, "mintTx", void 0);
+tslib_1.__decorate([
+    TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", Object)
+], VideoCreateWithoutAuthorInput.prototype, "mintSignature", void 0);
 tslib_1.__decorate([
     TypeGraphQL.Field(_type => Date, {
         nullable: true

@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoUpdateWithoutLikesInput = void 0;
 const tslib_1 = require("tslib");
 const TypeGraphQL = tslib_1.__importStar(require("type-graphql"));
+const GraphQLScalars = tslib_1.__importStar(require("graphql-scalars"));
+const client_1 = require("@prisma/client");
 const CommentUpdateManyWithoutVideoNestedInput_1 = require("../inputs/CommentUpdateManyWithoutVideoNestedInput");
 const DateTimeFieldUpdateOperationsInput_1 = require("../inputs/DateTimeFieldUpdateOperationsInput");
 const NullableStringFieldUpdateOperationsInput_1 = require("../inputs/NullableStringFieldUpdateOperationsInput");
@@ -40,6 +42,12 @@ tslib_1.__decorate([
     }),
     tslib_1.__metadata("design:type", NullableStringFieldUpdateOperationsInput_1.NullableStringFieldUpdateOperationsInput)
 ], VideoUpdateWithoutLikesInput.prototype, "mintTx", void 0);
+tslib_1.__decorate([
+    TypeGraphQL.Field(_type => GraphQLScalars.JSONResolver, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", Object)
+], VideoUpdateWithoutLikesInput.prototype, "mintSignature", void 0);
 tslib_1.__decorate([
     TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput_1.DateTimeFieldUpdateOperationsInput, {
         nullable: true

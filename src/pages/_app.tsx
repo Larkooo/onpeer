@@ -8,8 +8,12 @@ import Header from "../components/Header";
 import { CameraControls, MeshDistortMaterial, RoundedBox, useCubeCamera } from "@react-three/drei";
 import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const { pathname } = useRouter();
+  console.log(pathname);
+
   return (
     <ThirdwebProvider
       clientId={process.env.THIRDWEB_CLIENT_ID!}
@@ -25,7 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Scene />
       </div> */}
       <div id="app" className="relative h-screen max-h-screen">
-        {/* <Header /> */}
+        {pathname !== "/" && <Header />}
         <Component {...pageProps} />
         <Toaster />
       </div>
