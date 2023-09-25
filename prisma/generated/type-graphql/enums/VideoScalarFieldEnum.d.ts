@@ -6,5 +6,6 @@ export declare enum VideoScalarFieldEnum {
     authorId = "authorId",
     mintTx = "mintTx",
     mintSignature = "mintSignature",
+    playbackId = "playbackId",
     createdAt = "createdAt"
 }

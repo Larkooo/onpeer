@@ -6,5 +6,6 @@ export declare class VideoCreateManyAuthorInput {
     description: string;
     mintTx?: string | undefined;
     mintSignature?: Prisma.InputJsonValue | undefined;
+    playbackId: string;
     createdAt?: Date | undefined;
 }

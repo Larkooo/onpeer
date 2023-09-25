@@ -14,6 +14,7 @@ export declare class Video {
     likes?: Like[];
     mintTx?: string | null;
     mintSignature?: Prisma.JsonValue | null;
+    playbackId: string;
     createdAt: Date;
     _count?: VideoCount | null;
 }

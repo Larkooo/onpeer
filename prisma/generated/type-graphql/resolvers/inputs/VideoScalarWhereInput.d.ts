@@ -13,5 +13,6 @@ export declare class VideoScalarWhereInput {
     authorId?: StringFilter | undefined;
     mintTx?: StringNullableFilter | undefined;
     mintSignature?: JsonNullableFilter | undefined;
+    playbackId?: StringFilter | undefined;
     createdAt?: DateTimeFilter | undefined;
 }

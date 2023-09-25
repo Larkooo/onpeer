@@ -11,6 +11,7 @@ export declare class VideoUpdateWithoutCommentsInput {
     description?: StringFieldUpdateOperationsInput | undefined;
     mintTx?: NullableStringFieldUpdateOperationsInput | undefined;
     mintSignature?: Prisma.InputJsonValue | undefined;
+    playbackId?: StringFieldUpdateOperationsInput | undefined;
     createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
     author?: UserUpdateOneRequiredWithoutVideosNestedInput | undefined;
     likes?: LikeUpdateManyWithoutVideoNestedInput | undefined;

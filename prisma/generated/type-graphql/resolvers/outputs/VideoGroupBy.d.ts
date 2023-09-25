@@ -10,6 +10,7 @@ export declare class VideoGroupBy {
     authorId: string;
     mintTx: string | null;
     mintSignature: Prisma.JsonValue | null;
+    playbackId: string;
     createdAt: Date;
     _count: VideoCountAggregate | null;
     _min: VideoMinAggregate | null;

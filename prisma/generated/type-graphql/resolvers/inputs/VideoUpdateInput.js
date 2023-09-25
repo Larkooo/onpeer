@@ -50,6 +50,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", Object)
 ], VideoUpdateInput.prototype, "mintSignature", void 0);
 tslib_1.__decorate([
+    TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput_1.StringFieldUpdateOperationsInput, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", StringFieldUpdateOperationsInput_1.StringFieldUpdateOperationsInput)
+], VideoUpdateInput.prototype, "playbackId", void 0);
+tslib_1.__decorate([
     TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput_1.DateTimeFieldUpdateOperationsInput, {
         nullable: true
     }),

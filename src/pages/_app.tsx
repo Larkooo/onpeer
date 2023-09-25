@@ -15,6 +15,13 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { LivepeerConfig, createClient, createReactClient, studioProvider } from "@livepeer/react";
+
+const livepeer = createReactClient({
+  provider: studioProvider({
+    apiKey: process.env.LIVEPEER_API_KEY!,
+  }),
+});
 
 const client = new ApolloClient({
   uri: "/api/graphql",
@@ -23,30 +30,31 @@ const client = new ApolloClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
-  console.log(pathname);
 
   return (
-    <ApolloProvider client={client}>
-      <ThirdwebProvider
-        clientId={process.env.THIRDWEB_CLIENT_ID!}
-        secretKey={process.env.THIRDWEB_SECRET_KEY!}
-        activeChain={Contract.chain}
-        supportedChains={[Contract.chain]}
-        authConfig={{
-          domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
-          authUrl: "/api/auth",
-        }}
-      >
-        {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
+    <LivepeerConfig client={livepeer}>
+      <ApolloProvider client={client}>
+        <ThirdwebProvider
+          clientId={process.env.THIRDWEB_CLIENT_ID!}
+          secretKey={process.env.THIRDWEB_SECRET_KEY!}
+          activeChain={Contract.chain}
+          supportedChains={[Contract.chain]}
+          authConfig={{
+            domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
+            authUrl: "/api/auth",
+          }}
+        >
+          {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
         <Scene />
       </div> */}
-        <div id="app" className="relative h-screen max-h-screen">
-          {pathname !== "/" && <Header />}
-          <Component {...pageProps} />
-          <Toaster />
-        </div>
-      </ThirdwebProvider>
-    </ApolloProvider>
+          <div id="app" className="relative h-screen max-h-screen">
+            {pathname !== "/" && <Header />}
+            <Component {...pageProps} />
+            <Toaster />
+          </div>
+        </ThirdwebProvider>
+      </ApolloProvider>
+    </LivepeerConfig>
   );
 }
 

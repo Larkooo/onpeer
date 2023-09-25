@@ -9,5 +9,6 @@ export declare class VideoUpdateManyMutationInput {
     description?: StringFieldUpdateOperationsInput | undefined;
     mintTx?: NullableStringFieldUpdateOperationsInput | undefined;
     mintSignature?: Prisma.InputJsonValue | undefined;
+    playbackId?: StringFieldUpdateOperationsInput | undefined;
     createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
 }

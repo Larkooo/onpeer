@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma, sdk } from "../upload";
+import { livepeer, prisma, sdk } from "../upload";
 import { Contract } from "constants/contracts";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,6 +18,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     fromBlock: syncBlockNumber.latestBlockNumber,
     toBlock: latestBlockNumber,
   });
+
+  const dumpAssetData = async (uid: string) => {
+    const asset = await livepeer.getAsset(uid);
+    return {
+      createdAt: new Date(asset.createdAt!),
+      playbackId: asset.playbackId!,
+    }
+  }
 
   let tx: any[] = [];
   for (const event of events) {
@@ -41,9 +49,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               title: data.title,
               description: data.description,
               authorId: data.author,
-              createdAt: new Date((await sdk.getProvider().getBlock(data.blockNumber)).timestamp),
               mintTx: event.transaction.transactionHash,
               tokenId: data.tokenId.toHexString(),
+              ...(await dumpAssetData(data.uid))
             },
           })
         );

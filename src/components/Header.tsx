@@ -11,16 +11,22 @@ import Link from "next/link";
 import { sdk } from "src/pages/api/upload";
 import { useEffect, useState } from "react";
 import Connect from "./Connect";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const { push } = useRouter();
   const address = useAddress();
-  
 
   return (
     <header className="flex items-center w-full backdrop-blur-sm border-b-2 p-2">
-      <span className="text-4xl font-bold">
-        on<span className="transition-all duration-500 bg-gradient-to-r from-orange-600 to-purple-700 bg-clip-text text-transparent">peer</span>
-      </span>
+      <button onClick={() => push("/")}>
+        <span className="text-4xl font-bold select-none">
+          on
+          <span className="transition-all duration-500 bg-gradient-to-r from-orange-600 to-purple-700 bg-clip-text text-transparent">
+            peer
+          </span>
+        </span>
+      </button>
       <div className="w-full" />
       <Connect />
     </header>

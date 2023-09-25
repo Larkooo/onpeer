@@ -71,6 +71,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", JsonNullableFilter_1.JsonNullableFilter)
 ], VideoScalarWhereInput.prototype, "mintSignature", void 0);
 tslib_1.__decorate([
+    TypeGraphQL.Field(_type => StringFilter_1.StringFilter, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", StringFilter_1.StringFilter)
+], VideoScalarWhereInput.prototype, "playbackId", void 0);
+tslib_1.__decorate([
     TypeGraphQL.Field(_type => DateTimeFilter_1.DateTimeFilter, {
         nullable: true
     }),

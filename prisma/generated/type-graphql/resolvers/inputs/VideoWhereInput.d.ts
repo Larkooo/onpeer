@@ -16,6 +16,7 @@ export declare class VideoWhereInput {
     authorId?: StringFilter | undefined;
     mintTx?: StringNullableFilter | undefined;
     mintSignature?: JsonNullableFilter | undefined;
+    playbackId?: StringFilter | undefined;
     createdAt?: DateTimeFilter | undefined;
     author?: UserRelationFilter | undefined;
     comments?: CommentListRelationFilter | undefined;

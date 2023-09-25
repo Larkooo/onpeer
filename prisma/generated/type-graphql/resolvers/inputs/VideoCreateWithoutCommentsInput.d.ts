@@ -8,6 +8,7 @@ export declare class VideoCreateWithoutCommentsInput {
     description: string;
     mintTx?: string | undefined;
     mintSignature?: Prisma.InputJsonValue | undefined;
+    playbackId: string;
     createdAt?: Date | undefined;
     author: UserCreateNestedOneWithoutVideosInput;
     likes?: LikeCreateNestedManyWithoutVideoInput | undefined;

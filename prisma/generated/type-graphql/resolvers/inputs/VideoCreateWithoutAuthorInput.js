@@ -46,6 +46,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", Object)
 ], VideoCreateWithoutAuthorInput.prototype, "mintSignature", void 0);
 tslib_1.__decorate([
+    TypeGraphQL.Field(_type => String, {
+        nullable: false
+    }),
+    tslib_1.__metadata("design:type", String)
+], VideoCreateWithoutAuthorInput.prototype, "playbackId", void 0);
+tslib_1.__decorate([
     TypeGraphQL.Field(_type => Date, {
         nullable: true
     }),

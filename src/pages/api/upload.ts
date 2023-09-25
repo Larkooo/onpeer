@@ -90,6 +90,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       authorId: user.address,
       createdAt: new Date(result[0].createdAt ?? Date.now()),
       mintSignature: JSON.stringify(signature),
+      playbackId: result[0].playbackId!,
     },
   });
 

@@ -48,16 +48,17 @@ model Like {
 }
 
 model Video {
-    id          String    @id
-    tokenId     String?
-    title       String
-    description String
-    author      User      @relation(fields: [authorId], references: [id])
-    authorId    String
-    comments    Comment[]
-    likes       Like[]
-    mintTx      String?
+    id            String    @id
+    tokenId       String?
+    title         String
+    description   String
+    author        User      @relation(fields: [authorId], references: [id])
+    authorId      String
+    comments      Comment[]
+    likes         Like[]
+    mintTx        String?
     /// @TypeGraphQL.omit(output: true)
     mintSignature Json?
-    createdAt   DateTime  @default(now())
+    playbackId    String
+    createdAt     DateTime  @default(now())
 }

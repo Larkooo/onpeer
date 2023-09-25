@@ -5,5 +5,6 @@ export declare class VideoMaxAggregate {
     description: string | null;
     authorId: string | null;
     mintTx: string | null;
+    playbackId: string | null;
     createdAt: Date | null;
 }

@@ -7,5 +7,5 @@ export declare class FindFirstVideoArgs {
     cursor?: VideoWhereUniqueInput | undefined;
     take?: number | undefined;
     skip?: number | undefined;
-    distinct?: Array<"id" | "tokenId" | "title" | "description" | "authorId" | "mintTx" | "mintSignature" | "createdAt"> | undefined;
+    distinct?: Array<"id" | "tokenId" | "title" | "description" | "authorId" | "mintTx" | "mintSignature" | "playbackId" | "createdAt"> | undefined;
 }

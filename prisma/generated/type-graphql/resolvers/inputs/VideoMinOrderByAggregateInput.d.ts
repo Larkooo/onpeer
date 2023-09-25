@@ -5,5 +5,6 @@ export declare class VideoMinOrderByAggregateInput {
     description?: "asc" | "desc" | undefined;
     authorId?: "asc" | "desc" | undefined;
     mintTx?: "asc" | "desc" | undefined;
+    playbackId?: "asc" | "desc" | undefined;
     createdAt?: "asc" | "desc" | undefined;
 }
