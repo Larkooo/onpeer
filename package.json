@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "bun prisma:generate && next build",
+    "start": "bun prisma generate && next start",
     "lint": "next lint",
-    "prisma:migrate": "dotenv -e .env.development.local -- yarn prisma migrate deploy"
+    "prisma:generate": "bun prisma generate",
+    "prisma:migrate": "dotenv -e .env.development.local -- bun prisma migrate deploy"
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",

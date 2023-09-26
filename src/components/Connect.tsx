@@ -29,6 +29,7 @@ const Connect = () => {
     style={{
       backgroundColor: "rgb(234 88 12)",
       color: "white",
+      fontSize: "14px",
     }}
     detailsBtn={() => (
       <Button

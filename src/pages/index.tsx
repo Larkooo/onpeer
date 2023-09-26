@@ -122,7 +122,7 @@ const Home: NextPage = () => {
         ) : (
           <Connect />
         )}
-        <Button onClick={() => push("/dashboard")} variant="outline">Your videos</Button>
+        {(address && isLoggedIn) && <Button onClick={() => push("/dashboard")} variant="outline">Your videos</Button>}
       </div>
     </div>
   );
