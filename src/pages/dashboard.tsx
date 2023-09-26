@@ -31,19 +31,19 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col p-4 gap-2">
-      {data.videos.some((v: any) => !v.mintTx) && (
-        <Alert>
-          <LapTimerIcon className="h-8 w-8" />
-          <div className="ml-4">
-            <AlertTitle className="text-2xl">Important</AlertTitle>
-            <AlertDescription className="text-lg">
-              You have 2 videos that are going to be automatically purged soon.
+      {data.videos.some((v: any) => v.mintTx) && (
+        <Alert variant="destructive">
+          <LapTimerIcon className="h-6 w-6" />
+          <div className="ml-2 mt-1">
+            <AlertTitle className="">Important</AlertTitle>
+            <AlertDescription className="text-xs">
+              You have some videos that are going to be automatically purged soon.
             </AlertDescription>
           </div>
         </Alert>
       )}
-      <div className="flex flex-col gap-4">
-        <h1 className="text-4xl font-semibold">Your videos</h1>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-2xl font-semibold">Your videos</h1>
         <div className="grid sm:grid-cols-2  md:grid-cols-4 lg:grid-cols-6 gap-2">
           {data?.videos.map((video: any) => (
             <VideoCard
