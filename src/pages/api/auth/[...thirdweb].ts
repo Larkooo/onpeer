@@ -3,7 +3,9 @@ import { PrivateKeyWallet } from "@thirdweb-dev/auth/evm";
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "../upload";
 
-export const onpeerWallet = new PrivateKeyWallet(process.env.THIRDWEB_AUTH_PRIVATE_KEY!);
+export const onpeerWallet = new PrivateKeyWallet(
+  process.env.THIRDWEB_AUTH_PRIVATE_KEY!
+);
 
 export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
   domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
@@ -24,14 +26,29 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
       const userVideoCount = await prisma.video.count({
         where: { authorId: user.address },
       });
+      const mintSignatures: any = await prisma.video.findMany({
+        where: {
+          NOT: {
+            mintTx: {
+              not: null,
+            },
+          },
+        },
+        select: {
+          id: true,
+          mintSignature: true,
+        },
+      });
 
       return {
         videoCount: userVideoCount,
-      }
+        mintSignatures: mintSignatures.reduce((obj: any, item: any) => ({
+          ...obj,
+          [item.id]: JSON.parse(item.mintSignature),
+        }), {}),
+      };
     },
-    onLogout: async (user) => {
-      
-    },
+    onLogout: async (user) => {},
   },
 });
 

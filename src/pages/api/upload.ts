@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import formidable, { File as FormidableFile } from "formidable";
 import { studioProvider, createClient } from "@livepeer/react";
 import { NextRequest } from "next/server";
-import { createReadStream, readFile, readFileSync } from "fs";
+import { ReadStream, createReadStream, readFile, readFileSync } from "fs";
 import { File } from "buffer";
 import { kv } from "@vercel/kv";
 import { PrismaClient } from "@prisma/client";

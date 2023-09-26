@@ -61,26 +61,6 @@ const Home: NextPage = () => {
     });
   };
 
-  useEffect(() => {
-    toast({
-      title: "Video: Uploaded",
-      description: "Mint your video to make it persistent.",
-      action: (
-        <ToastAction
-          className="bg-orange-600 text-white hover:bg-orange-500 px-5 gap-2"
-          altText="Mint"
-          onClick={async () => {
-            
-          }}
-        >
-          Mint <Pencil1Icon />
-        </ToastAction>
-      ),
-      duration: 1000**1000**1000
-    });
-    console.log("toat")
-  }, []);
-
   return (
     <div className="flex justify-center items-center h-full p-4 text-center flex-col gap-4">
       <h1 className="lg:text-7xl text-5xl font-bold md:px-32">

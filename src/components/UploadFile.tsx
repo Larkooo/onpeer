@@ -118,6 +118,7 @@ export const UploadFile = ({
               setUploading(true);
               await onUpload(files);
               setUploading(false);
+              setOpen(false);
             }}
             className="text-xs"
             type="submit"

@@ -15,7 +15,13 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { LivepeerConfig, createClient, createReactClient, studioProvider } from "@livepeer/react";
+import {
+  LivepeerConfig,
+  createClient,
+  createReactClient,
+  studioProvider,
+} from "@livepeer/react";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const livepeer = createReactClient({
   provider: studioProvider({
@@ -44,14 +50,18 @@ function MyApp({ Component, pageProps }: AppProps) {
             authUrl: "/api/auth",
           }}
         >
-          {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
+          <TooltipProvider>
+            {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
         <Scene />
       </div> */}
-          <div id="app" className="relative h-screen max-h-screen">
-            {pathname !== "/" && <Header />}
-            <Component {...pageProps} />
-            <Toaster />
-          </div>
+            <div className="flex flex-col h-screen">
+              {pathname !== "/" && <Header />}
+              <div className="flex-1">
+                <Component {...pageProps} />
+              </div>
+              <Toaster />
+            </div>
+          </TooltipProvider>
         </ThirdwebProvider>
       </ApolloProvider>
     </LivepeerConfig>

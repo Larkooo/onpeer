@@ -18,7 +18,7 @@ const Header = () => {
   const address = useAddress();
 
   return (
-    <header className="flex items-center w-full backdrop-blur-sm border-b-2 p-2">
+    <header className="z-50 sticky top-0 flex items-center w-full backdrop-blur-sm bg-white bg-opacity-80 border-b-2 p-2">
       <button onClick={() => push("/")}>
         <span className="text-4xl font-bold select-none">
           on
