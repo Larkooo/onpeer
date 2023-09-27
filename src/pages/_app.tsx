@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
         <Scene />
       </div> */}
-            <div className="flex flex-col h-screen">
+            <div className="flex flex-col relative h-screen max-h-screen">
               {pathname !== "/" && <Header />}
               <div className="flex-1">
                 <Component {...pageProps} />

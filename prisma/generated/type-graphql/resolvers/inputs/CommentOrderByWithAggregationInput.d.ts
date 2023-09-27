@@ -2,6 +2,7 @@ import { CommentCountOrderByAggregateInput } from "../inputs/CommentCountOrderBy
 import { CommentMaxOrderByAggregateInput } from "../inputs/CommentMaxOrderByAggregateInput";
 import { CommentMinOrderByAggregateInput } from "../inputs/CommentMinOrderByAggregateInput";
 export declare class CommentOrderByWithAggregationInput {
+    id?: "asc" | "desc" | undefined;
     text?: "asc" | "desc" | undefined;
     userId?: "asc" | "desc" | undefined;
     videoId?: "asc" | "desc" | undefined;

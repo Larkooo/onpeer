@@ -12,10 +12,7 @@ let CommentRelationsResolver = exports.CommentRelationsResolver = class CommentR
         const { _count } = (0, helpers_1.transformInfoIntoPrismaArgs)(info);
         return (0, helpers_1.getPrismaFromContext)(ctx).comment.findUniqueOrThrow({
             where: {
-                userId_videoId: {
-                    userId: comment.userId,
-                    videoId: comment.videoId,
-                },
+                id: comment.id,
             },
         }).user({
             ...(_count && (0, helpers_1.transformCountFieldIntoSelectRelationsCount)(_count)),
@@ -25,10 +22,7 @@ let CommentRelationsResolver = exports.CommentRelationsResolver = class CommentR
         const { _count } = (0, helpers_1.transformInfoIntoPrismaArgs)(info);
         return (0, helpers_1.getPrismaFromContext)(ctx).comment.findUniqueOrThrow({
             where: {
-                userId_videoId: {
-                    userId: comment.userId,
-                    videoId: comment.videoId,
-                },
+                id: comment.id,
             },
         }).video({
             ...(_count && (0, helpers_1.transformCountFieldIntoSelectRelationsCount)(_count)),

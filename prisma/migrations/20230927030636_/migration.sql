@@ -15,12 +15,13 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Comment" (
+    "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "videoId" TEXT NOT NULL,
     "tx" TEXT NOT NULL,
 
-    CONSTRAINT "Comment_pkey" PRIMARY KEY ("userId","videoId")
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -40,6 +41,8 @@ CREATE TABLE "Video" (
     "description" TEXT NOT NULL,
     "authorId" TEXT NOT NULL,
     "mintTx" TEXT,
+    "mintSignature" JSONB,
+    "playbackId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Video_pkey" PRIMARY KEY ("id")

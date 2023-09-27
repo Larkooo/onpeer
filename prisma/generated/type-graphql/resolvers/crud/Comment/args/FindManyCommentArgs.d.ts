@@ -7,5 +7,5 @@ export declare class FindManyCommentArgs {
     cursor?: CommentWhereUniqueInput | undefined;
     take?: number | undefined;
     skip?: number | undefined;
-    distinct?: Array<"text" | "userId" | "videoId" | "tx"> | undefined;
+    distinct?: Array<"id" | "text" | "userId" | "videoId" | "tx"> | undefined;
 }

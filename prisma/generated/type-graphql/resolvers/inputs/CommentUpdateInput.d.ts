@@ -2,6 +2,7 @@ import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOpe
 import { UserUpdateOneRequiredWithoutCommentsNestedInput } from "../inputs/UserUpdateOneRequiredWithoutCommentsNestedInput";
 import { VideoUpdateOneRequiredWithoutCommentsNestedInput } from "../inputs/VideoUpdateOneRequiredWithoutCommentsNestedInput";
 export declare class CommentUpdateInput {
+    id?: StringFieldUpdateOperationsInput | undefined;
     text?: StringFieldUpdateOperationsInput | undefined;
     tx?: StringFieldUpdateOperationsInput | undefined;
     user?: UserUpdateOneRequiredWithoutCommentsNestedInput | undefined;

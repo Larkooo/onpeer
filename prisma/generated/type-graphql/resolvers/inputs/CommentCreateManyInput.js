@@ -7,6 +7,12 @@ let CommentCreateManyInput = exports.CommentCreateManyInput = class CommentCreat
 };
 tslib_1.__decorate([
     TypeGraphQL.Field(_type => String, {
+        nullable: true
+    }),
+    tslib_1.__metadata("design:type", String)
+], CommentCreateManyInput.prototype, "id", void 0);
+tslib_1.__decorate([
+    TypeGraphQL.Field(_type => String, {
         nullable: false
     }),
     tslib_1.__metadata("design:type", String)

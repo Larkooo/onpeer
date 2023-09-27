@@ -31,7 +31,6 @@ export { CommentUpdateWithoutUserInput } from "./CommentUpdateWithoutUserInput";
 export { CommentUpdateWithoutVideoInput } from "./CommentUpdateWithoutVideoInput";
 export { CommentUpsertWithWhereUniqueWithoutUserInput } from "./CommentUpsertWithWhereUniqueWithoutUserInput";
 export { CommentUpsertWithWhereUniqueWithoutVideoInput } from "./CommentUpsertWithWhereUniqueWithoutVideoInput";
-export { CommentUserIdVideoIdCompoundUniqueInput } from "./CommentUserIdVideoIdCompoundUniqueInput";
 export { CommentWhereInput } from "./CommentWhereInput";
 export { CommentWhereUniqueInput } from "./CommentWhereUniqueInput";
 export { DateTimeFieldUpdateOperationsInput } from "./DateTimeFieldUpdateOperationsInput";

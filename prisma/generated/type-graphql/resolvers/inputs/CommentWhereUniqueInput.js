@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentWhereUniqueInput = void 0;
 const tslib_1 = require("tslib");
 const TypeGraphQL = tslib_1.__importStar(require("type-graphql"));
-const CommentUserIdVideoIdCompoundUniqueInput_1 = require("../inputs/CommentUserIdVideoIdCompoundUniqueInput");
 const CommentWhereInput_1 = require("../inputs/CommentWhereInput");
 const StringFilter_1 = require("../inputs/StringFilter");
 const UserRelationFilter_1 = require("../inputs/UserRelationFilter");
@@ -11,11 +10,11 @@ const VideoRelationFilter_1 = require("../inputs/VideoRelationFilter");
 let CommentWhereUniqueInput = exports.CommentWhereUniqueInput = class CommentWhereUniqueInput {
 };
 tslib_1.__decorate([
-    TypeGraphQL.Field(_type => CommentUserIdVideoIdCompoundUniqueInput_1.CommentUserIdVideoIdCompoundUniqueInput, {
+    TypeGraphQL.Field(_type => String, {
         nullable: true
     }),
-    tslib_1.__metadata("design:type", CommentUserIdVideoIdCompoundUniqueInput_1.CommentUserIdVideoIdCompoundUniqueInput)
-], CommentWhereUniqueInput.prototype, "userId_videoId", void 0);
+    tslib_1.__metadata("design:type", String)
+], CommentWhereUniqueInput.prototype, "id", void 0);
 tslib_1.__decorate([
     TypeGraphQL.Field(_type => [CommentWhereInput_1.CommentWhereInput], {
         nullable: true

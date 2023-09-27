@@ -20,6 +20,8 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useAddress, useUser } from "@thirdweb-dev/react";
 import MintDialog from "./MintDialog";
 import { Ref, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface VideoCardProps {
   id: string;
@@ -42,12 +44,13 @@ const VideoCard = ({
 }: VideoCardProps) => {
   const { user } = useUser();
   const address = useAddress();
+  const { push } = useRouter();
 
   const toSign = (user?.data as any)?.mintSignatures?.[id];
   console.log(toSign);
 
   return (
-    <div className="text-start relative cursor-pointer">
+    <div onClick={() => push(id)} className="text-start relative cursor-pointer">
       <div className="z-50 absolute top-4 right-4">
         <Tooltip>
           <TooltipTrigger>
@@ -74,9 +77,11 @@ const VideoCard = ({
           </CardDescription>
         </CardHeader>
         <CardContent className="pb-0 px-0 pt-2">
-          <video>
-            <source src={`https://lp-playback.com/hls/${playbackId}/video`} />
-          </video>
+          <AspectRatio ratio={16/9}>
+            <video>
+              <source src={`https://lp-playback.com/hls/${playbackId}/video`} />
+            </video>
+          </AspectRatio>
         </CardContent>
       </Card>
     </div>

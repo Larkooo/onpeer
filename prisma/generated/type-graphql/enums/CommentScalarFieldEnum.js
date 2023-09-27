@@ -5,6 +5,7 @@ const tslib_1 = require("tslib");
 const TypeGraphQL = tslib_1.__importStar(require("type-graphql"));
 var CommentScalarFieldEnum;
 (function (CommentScalarFieldEnum) {
+    CommentScalarFieldEnum["id"] = "id";
     CommentScalarFieldEnum["text"] = "text";
     CommentScalarFieldEnum["userId"] = "userId";
     CommentScalarFieldEnum["videoId"] = "videoId";
