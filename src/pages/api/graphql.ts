@@ -5,7 +5,7 @@ import { resolvers as generatedResolvers } from "prisma/generated/type-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { buildTypeDefsAndResolversSync } from "type-graphql";
 import { graphql } from "graphql";
-import { ApolloServer } from "@apollo/server";
+import { ApolloServer, ApolloServerPlugin } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { PrismaClient } from "@prisma/client/edge";
@@ -27,13 +27,15 @@ const { typeDefs, resolvers } = buildTypeDefsAndResolversSync({
   ],
 });
 
+const plugins: ApolloServerPlugin[] = [];
+if (process.env.NODE_ENV === "development") {
+  plugins.push(ApolloServerPluginLandingPageGraphQLPlayground() as any);
+}
+
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  plugins: [
-    process.env.NODE_ENV === "development" &&
-      (ApolloServerPluginLandingPageGraphQLPlayground() as any),
-  ],
+  plugins,
 });
 
 const handler = startServerAndCreateNextHandler(apolloServer, {
