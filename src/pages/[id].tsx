@@ -134,7 +134,7 @@ const Video = () => {
         />
         <meta name="twitter:player:stream:content_type" content="video/mp4" />
 
-        <meta property="og:url" content={window.location.href} />
+        <meta property="og:url" content={`https://onpeer.vercel.app/${id}`} />
         <meta
           property="og:video"
           content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
