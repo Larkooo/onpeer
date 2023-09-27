@@ -8,8 +8,27 @@ import { graphql } from "graphql";
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import { PrismaClient } from "@prisma/client";
-import { prisma } from "./upload";
+import { PrismaClient } from '@prisma/client/edge'
+import { ThirdwebSDK } from "@thirdweb-dev/sdk";
+import { createClient, studioProvider } from "@livepeer/react";
+import { Contract } from "constants/contracts";
+
+
+export const prisma = new PrismaClient();
+
+export const { provider: livepeer } = createClient({
+  provider: studioProvider({
+    apiKey: process.env.LIVEPEER_API_KEY!,
+  }),
+});
+export const sdk = ThirdwebSDK.fromPrivateKey(
+  process.env.THIRDWEB_AUTH_PRIVATE_KEY!,
+  Contract.chain,
+  {
+    clientId: process.env.THIRDWEB_CLIENT_ID!,
+    secretKey: process.env.THIRDWEB_SECRET_KEY!,
+  }
+);
 
 const { typeDefs, resolvers } = buildTypeDefsAndResolversSync({
   resolvers: generatedResolvers,

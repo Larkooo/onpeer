@@ -1,7 +1,6 @@
 import { ThirdwebAuth } from "@thirdweb-dev/auth/next";
 import { PrivateKeyWallet } from "@thirdweb-dev/auth/evm";
-import { PrismaClient } from "@prisma/client";
-import { prisma } from "../upload";
+import { prisma } from "../graphql";
 
 export const onpeerWallet = new PrivateKeyWallet(
   process.env.THIRDWEB_AUTH_PRIVATE_KEY!
@@ -43,10 +42,13 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
 
       return {
         videoCount: userVideoCount,
-        mintSignatures: mintSignatures.reduce((obj: any, item: any) => ({
-          ...obj,
-          [item.id]: JSON.parse(item.mintSignature),
-        }), {}),
+        mintSignatures: mintSignatures.reduce(
+          (obj: any, item: any) => ({
+            ...obj,
+            [item.id]: JSON.parse(item.mintSignature),
+          }),
+          {}
+        ),
       };
     },
     onLogout: async (user) => {},

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { livepeer, prisma, sdk } from "../upload";
 import { Contract } from "constants/contracts";
+import { prisma, sdk, livepeer } from "../graphql";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const syncBlockNumber = await prisma.sync.upsert({
