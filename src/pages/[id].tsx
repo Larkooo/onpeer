@@ -130,22 +130,25 @@ const Video = () => {
         <meta name="twitter:player:height" content="480" />
         <meta
           name="twitter:player:stream"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
         />
         <meta name="twitter:player:stream:content_type" content="video/mp4" />
 
         <meta property="og:url" content={`https://onpeer.vercel.app/${id}`} />
         <meta
           property="og:video"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
         />
-        <meta property="og:video:secure_url" content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`} />
+        <meta
+          property="og:video:secure_url"
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
+        />
         <meta property="og:video:type" content="video/mp4" />
         <meta property="og:video:width" content="720" />
         <meta property="og:video:height" content="480" />
         <meta
           property="og:video"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
         />
       </Head>
       <div className="flex flex-col items-center p-8 w-full">
