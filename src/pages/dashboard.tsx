@@ -1,4 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { gql, useQuery } from "@apollo/client";
 import { LapTimerIcon } from "@radix-ui/react-icons";
 import { useUser } from "@thirdweb-dev/react";
@@ -27,11 +29,9 @@ const Dashboard = () => {
     skip: !user?.address,
   });
 
-  if (!data) return null;
-
   return (
     <div className="flex flex-col p-4 gap-2">
-      {data.videos.some((v: any) => v.mintTx) && (
+      {data?.videos?.some((v: any) => v.mintTx) && (
         <Alert variant="destructive">
           <LapTimerIcon className="h-6 w-6" />
           <div className="ml-2 mt-1">
@@ -45,7 +45,15 @@ const Dashboard = () => {
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-semibold">Your videos</h1>
         <div className="grid sm:grid-cols-2  md:grid-cols-4 lg:grid-cols-6 gap-2">
-          {data?.videos.map((video: any) => (
+          {loading ? new Array(8).fill(0).map((_, i) => <Card key={i}>
+            <CardHeader>
+              <Skeleton className="w-20 h-4"/>
+              <Skeleton className="h-4"/>
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-20" />
+            </CardContent>
+          </Card>) : data?.videos.map((video: any) => (
             <VideoCard
               id={video.id}
               title={video.title}
