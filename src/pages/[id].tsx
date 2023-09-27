@@ -22,6 +22,8 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import shortUUID, { uuid } from "short-uuid";
+import { prisma } from "./api/upload";
+import { GetVideo } from "./__generated__/GetVideo";
 
 const GET_VIDEO = gql`
   query GetVideo($id: String!) {
@@ -68,14 +70,14 @@ const Video = () => {
   const [comments, setComments] = useState<any[]>([]);
   const [likes, setLikes] = useState<any[]>([]);
 
-  const { data, loading, error, updateQuery } = useQuery(GET_VIDEO, {
+  const { data, loading, error, updateQuery } = useQuery<GetVideo>(GET_VIDEO, {
     variables: {
       id: parsedId,
     },
     skip: !parsedId,
     onCompleted: (data) => {
-      setComments(data.video.comments);
-      setLikes(data.video.likes);
+      setComments(data.video!.comments);
+      setLikes(data.video!.likes);
     },
   });
 
@@ -84,7 +86,7 @@ const Video = () => {
 
     setSendingComment(true);
     contract!
-      .call("comment", [data.video.tokenId, comment])
+      .call("comment", [data!.video!.tokenId, comment])
       .then((tx: any) => {
         setComments((comments) => [
           ...comments,
@@ -126,12 +128,12 @@ const Video = () => {
               {loading ? (
                 <Skeleton className="w-20 h-4" />
               ) : (
-                <CardTitle>{data?.video.title}</CardTitle>
+                <CardTitle>{data?.video?.title}</CardTitle>
               )}
               {loading ? (
                 <Skeleton className="w-56 h-4" />
               ) : (
-                <CardDescription>{data?.video.description}</CardDescription>
+                <CardDescription>{data?.video?.description}</CardDescription>
               )}
             </CardHeader>
             {/* <CardContent>

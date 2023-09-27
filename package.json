@@ -7,6 +7,7 @@
     "build": "yarn prisma:generate && next build",
     "start": "yarn prisma generate && next start",
     "lint": "next lint",
+    "apollo:generate": "bunx apollo@latest service:download --endpoint=http://localhost:3000/api/graphql graphql-schema.json && bunx apollo@latest codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql",
     "prisma:generate": "yarn prisma generate",
     "prisma:migrate": "dotenv -e .env.development.local -- yarn prisma migrate deploy"
   },
