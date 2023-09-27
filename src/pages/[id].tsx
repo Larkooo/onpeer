@@ -139,7 +139,7 @@ const Video = () => {
           property="og:video"
           content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
-        <meta property="og:video:secure_url" content="{{ vidurl }}" />
+        <meta property="og:video:secure_url" content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`} />
         <meta property="og:video:type" content="video/mp4" />
         <meta property="og:video:width" content="720" />
         <meta property="og:video:height" content="480" />
