@@ -113,14 +113,16 @@ const Video = () => {
         <meta name="description" content={data?.video?.description} />
         <meta property="og:title" content={data?.video?.title} />
         <meta property="og:description" content={data?.video?.description} />
+        <meta property="og:url" content={`https://onpeer.vercel.app/${id}`} />
+        <meta
+          property="og:site_name"
+          content={`Onpeer - ${formatAddress(data!.video!.author!.id)}`}
+        />
+
         <meta property="twitter:title" content={data?.video?.title} />
         <meta
           property="twitter:description"
           content={data?.video?.description}
-        />
-        <meta
-          property="og:site_name"
-          content={`Onpeer - ${formatAddress(data!.video!.author!.id)}`}
         />
         <meta
           property="twitter:site"
@@ -130,26 +132,21 @@ const Video = () => {
         <meta name="twitter:player:height" content="480" />
         <meta
           name="twitter:player:stream"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
         <meta name="twitter:player:stream:content_type" content="video/mp4" />
 
-        <meta property="og:url" content={`https://onpeer.vercel.app/${id}`} />
         <meta
           property="og:video"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
         <meta
           property="og:video:secure_url"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
         <meta property="og:video:type" content="video/mp4" />
         <meta property="og:video:width" content="720" />
         <meta property="og:video:height" content="480" />
-        <meta
-          property="og:video"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/index.m3u8`}
-        />
       </Head>
       <div className="flex flex-col items-center p-8 w-full">
         <div className="flex flex-col items-center gap-4 max-w-[1100px] min-w-[300px]">
