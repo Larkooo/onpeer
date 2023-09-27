@@ -25,11 +25,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
+// TODO: add env variable for app and api url
 const httpLink = new HttpLink({
   uri:
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/api/graphql"
-      : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/graphql`, // Server URL (must be absolute)
+      : `https://onpeer.vercel.app/api/graphql`, // Server URL (must be absolute)
       credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
 });
 
