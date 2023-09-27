@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { gql, useQuery } from "@apollo/client";
 import { Player } from "@livepeer/react";
 import { UpdateIcon } from "@radix-ui/react-icons";
@@ -92,10 +93,6 @@ const Video = () => {
       });
   };
 
-  console.log(comments);
-
-  if (!data) return null;
-
   return (
     <div className="flex flex-col items-center p-8 w-full">
       <div className="flex flex-col items-center gap-4 max-w-[1100px] min-w-[300px]">
@@ -103,15 +100,18 @@ const Video = () => {
           <CardHeader></CardHeader>
           <CardContent>
             <div className="rounded-xl overflow-hidden">
-              <Player playbackId={data?.video.playbackId} />
+              {loading ? <Skeleton style={{
+                width: "80vw",
+                height: "40vh"
+              }} /> : <Player playbackId={data?.video.playbackId} />}
             </div>
           </CardContent>
         </Card>
         <div className="flex flex-row gap-4 w-full">
           <Card className="flex-grow">
             <CardHeader>
-              <CardTitle>{data?.video.title}</CardTitle>
-              <CardDescription>{data?.video.description}</CardDescription>
+              {loading ? <Skeleton className="w-20 h-4" /> : <CardTitle>{data?.video.title}</CardTitle>}
+              {loading ? <Skeleton className="w-56 h-4" /> : <CardDescription>{data?.video.description}</CardDescription>}
             </CardHeader>
             {/* <CardContent>
                 <span className="text-sm">posted {moment(data.video.createdAt).fromNow()}</span>
@@ -121,7 +121,7 @@ const Video = () => {
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="mb-2">
-              Comments ({data.video.comments.length})
+              Comments ({data?.video?.comments?.length})
             </CardTitle>
             <CardDescription>
               Leaving a comment is irreversible. You cannot delete it afterward.
