@@ -50,6 +50,7 @@
     "react-dom": "^18.2",
     "react-dropzone": "^14.2.3",
     "reflect-metadata": "^0.1.13",
+    "short-uuid": "^4.2.2",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.156.1",

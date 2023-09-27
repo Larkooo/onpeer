@@ -20,7 +20,8 @@ import {
 import { Contract } from "constants/contracts";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import shortUUID, { uuid } from "short-uuid";
 
 const GET_VIDEO = gql`
   query GetVideo($id: String!) {
@@ -39,6 +40,7 @@ const GET_VIDEO = gql`
         userId
       }
       comments {
+        id
         userId
         text
         tx
@@ -48,8 +50,13 @@ const GET_VIDEO = gql`
 `;
 
 const Video = () => {
+  const isUuid =
+    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
+  const uuidTranslator = shortUUID();
+
   const router = useRouter();
-  const { id } = router.query;
+  const id = router.query.id as string;
+  const parsedId = id && (isUuid.test(id) ? id : uuidTranslator.toUUID(id));
 
   const address = useAddress();
 
@@ -61,11 +68,11 @@ const Video = () => {
   const [comments, setComments] = useState<any[]>([]);
   const [likes, setLikes] = useState<any[]>([]);
 
-  const { data, loading, error } = useQuery(GET_VIDEO, {
+  const { data, loading, error, updateQuery } = useQuery(GET_VIDEO, {
     variables: {
-      id,
+      id: parsedId,
     },
-    skip: !id,
+    skip: !parsedId,
     onCompleted: (data) => {
       setComments(data.video.comments);
       setLikes(data.video.likes);
@@ -100,18 +107,32 @@ const Video = () => {
           <CardHeader></CardHeader>
           <CardContent>
             <div className="rounded-xl overflow-hidden">
-              {loading ? <Skeleton style={{
-                width: "80vw",
-                height: "40vh"
-              }} /> : <Player playbackId={data?.video.playbackId} />}
+              {loading ? (
+                <Skeleton
+                  style={{
+                    width: "80vw",
+                    height: "40vh",
+                  }}
+                />
+              ) : (
+                <Player playbackId={data?.video.playbackId} />
+              )}
             </div>
           </CardContent>
         </Card>
         <div className="flex flex-row gap-4 w-full">
           <Card className="flex-grow">
             <CardHeader>
-              {loading ? <Skeleton className="w-20 h-4" /> : <CardTitle>{data?.video.title}</CardTitle>}
-              {loading ? <Skeleton className="w-56 h-4" /> : <CardDescription>{data?.video.description}</CardDescription>}
+              {loading ? (
+                <Skeleton className="w-20 h-4" />
+              ) : (
+                <CardTitle>{data?.video.title}</CardTitle>
+              )}
+              {loading ? (
+                <Skeleton className="w-56 h-4" />
+              ) : (
+                <CardDescription>{data?.video.description}</CardDescription>
+              )}
             </CardHeader>
             {/* <CardContent>
                 <span className="text-sm">posted {moment(data.video.createdAt).fromNow()}</span>
@@ -121,12 +142,11 @@ const Video = () => {
         <Card className="w-full">
           <CardHeader className="flex flex-row items-center">
             <div className="flex flex-col flex-grow">
-            <CardTitle className=" ">
-              Comments
-            </CardTitle>
-            <CardDescription>
-            Leaving a comment is irreversible. You cannot delete it afterward.
-            </CardDescription>
+              <CardTitle className=" ">Comments</CardTitle>
+              <CardDescription>
+                Leaving a comment is irreversible. You cannot delete it
+                afterward.
+              </CardDescription>
             </div>
             <div className="flex gap-4">
               <Input
@@ -136,7 +156,10 @@ const Video = () => {
                 type="text"
                 placeholder="you should do more of this and more of that..."
               />
-              <Button disabled={sendingComment || !data?.video?.tokenId} onClick={handleComment}>
+              <Button
+                disabled={sendingComment || !data?.video?.tokenId}
+                onClick={handleComment}
+              >
                 {sendingComment ? (
                   <UpdateIcon className="animate-spin" />
                 ) : (
@@ -147,7 +170,7 @@ const Video = () => {
           </CardHeader>
           <CardContent>
             {comments.map((c: any) => (
-              <div className="flex flex-col" key={c.userId}>
+              <div className="flex flex-col" key={c.id}>
                 <span className="text-sm">{c.text}</span>
                 <span className="text-xs">by {c.userId}</span>
               </div>
