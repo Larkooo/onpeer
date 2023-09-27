@@ -50,7 +50,7 @@ const VideoCard = ({
   console.log(toSign);
 
   return (
-    <div onClick={() => push(id)} className="text-start relative cursor-pointer">
+    <div className="relative">
       <div className="z-50 absolute top-4 right-4">
         <Tooltip>
           <TooltipTrigger>
@@ -67,8 +67,8 @@ const VideoCard = ({
           </TooltipContent>
         </Tooltip>
       </div>
-      <Card className="relative transition-all hover:brightness-90 overflow-hidden">
-        <CardHeader className="px-4 border-b-2 pb-2 pt-4">
+      <Card onClick={() => push(id)} className="cursor-pointer relative transition-all hover:brightness-90 overflow-hidden">
+        <CardHeader className="px-4 pb-0 pt-4">
           <CardTitle className="text-ellipsis  whitespace-nowrap overflow-hidden pr-3">
             {title || "no title"}
           </CardTitle>
@@ -76,12 +76,12 @@ const VideoCard = ({
             {description || "no description"}
           </CardDescription>
         </CardHeader>
-        <CardContent className="pb-0 px-0 pt-2">
-          <AspectRatio ratio={16/9}>
-            <video>
+        <CardContent className="pb-0 px-0 pt-2 relative">
+            <div className="flex h-40 items-center justify-center bg-black/5">
+            <video className="h-full">
               <source src={`https://lp-playback.com/hls/${playbackId}/video`} />
             </video>
-          </AspectRatio>
+            </div>
         </CardContent>
       </Card>
     </div>

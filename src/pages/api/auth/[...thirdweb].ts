@@ -28,6 +28,7 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
       });
       const mintSignatures: any = await prisma.video.findMany({
         where: {
+          authorId: user.address,
           NOT: {
             mintTx: {
               not: null,

@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col p-4 gap-2">
-      {data?.videos?.some((v: any) => v.mintTx) && (
+      {data?.videos?.some((v: any) => !v.mintTx) && (
         <Alert variant="destructive">
           <LapTimerIcon className="h-6 w-6" />
           <div className="ml-2 mt-1">

@@ -42,7 +42,7 @@ const Home: NextPage = () => {
     });
     const signature: SignedPayload721WithQuantitySignature = await res.json();
 
-    
+    push("/dashboard");
     toast({
       title: "Video: Uploaded",
       description: "Mint your video to make it persistent.",

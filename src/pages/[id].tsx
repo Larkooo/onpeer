@@ -119,22 +119,24 @@ const Video = () => {
           </Card>
         </div>
         <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="mb-2">
-              Comments ({data?.video?.comments?.length})
+          <CardHeader className="flex flex-row items-center">
+            <div className="flex flex-col flex-grow">
+            <CardTitle className=" ">
+              Comments
             </CardTitle>
             <CardDescription>
-              Leaving a comment is irreversible. You cannot delete it afterward.
+            Leaving a comment is irreversible. You cannot delete it afterward.
             </CardDescription>
-            <div className="flex w-full gap-4">
+            </div>
+            <div className="flex gap-4">
               <Input
-                disabled={sendingComment}
+                disabled={sendingComment || !data?.video?.tokenId}
                 value={comment}
                 onChange={(e) => setComment(e.currentTarget.value)}
                 type="text"
-                placeholder="i love your video"
+                placeholder="you should do more of this and more of that..."
               />
-              <Button disabled={sendingComment} onClick={handleComment}>
+              <Button disabled={sendingComment || !data?.video?.tokenId} onClick={handleComment}>
                 {sendingComment ? (
                   <UpdateIcon className="animate-spin" />
                 ) : (
