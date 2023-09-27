@@ -23,6 +23,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import shortUUID, { uuid } from "short-uuid";
 import { GetVideo } from "./__generated__/GetVideo";
+import { addApolloState, initializeApollo } from "src/lib/apolloClient";
+import Head from "next/head";
 
 const GET_VIDEO = gql`
   query GetVideo($id: String!) {
@@ -50,11 +52,14 @@ const GET_VIDEO = gql`
   }
 `;
 
-const Video = () => {
-  const isUuid =
-    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
-  const uuidTranslator = shortUUID();
+const isUuid =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
+const uuidTranslator = shortUUID();
 
+const formatAddress = (address: string) =>
+  `${address.slice(0, 6)}...${address.slice(-4)}`;
+
+const Video = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const parsedId = id && (isUuid.test(id) ? id : uuidTranslator.toUUID(id));
@@ -102,85 +107,123 @@ const Video = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-8 w-full">
-      <div className="flex flex-col items-center gap-4 max-w-[1100px] min-w-[300px]">
-        <Card>
-          <CardHeader className="pb-0"></CardHeader>
-          <CardContent>
-            <div className="rounded-xl overflow-hidden">
-              {loading ? (
-                <Skeleton
-                  style={{
-                    width: "80vw",
-                    height: "40vh",
-                  }}
-                />
-              ) : (
-                <Player playbackId={data?.video?.playbackId} />
-              )}
-            </div>
-          </CardContent>
-        </Card>
-        <div className="flex flex-row gap-4 w-full">
-          <Card className="flex-grow">
-            <CardHeader>
-              {loading ? (
-                <Skeleton className="w-20 h-4" />
-              ) : (
-                <CardTitle>{data?.video?.title}</CardTitle>
-              )}
-              {loading ? (
-                <Skeleton className="w-56 h-4" />
-              ) : (
-                <CardDescription>{data?.video?.description}</CardDescription>
-              )}
-            </CardHeader>
-            {/* <CardContent>
+    <>
+      <Head>
+        <title>{data?.video?.title}</title>
+        <meta name="description" content={data?.video?.description} />
+        <meta property="og:title" content={data?.video?.title} />
+        <meta property="og:description" content={data?.video?.description} />
+        <meta property="twitter:title" content={data?.video?.title} />
+        <meta
+          property="twitter:description"
+          content={data?.video?.description}
+        />
+        <meta
+          property="og:site_name"
+          content={`Onpeer - ${formatAddress(data!.video!.author!.id)}`}
+        />
+        <meta
+          property="twitter:site"
+          content={`Onpeer - ${formatAddress(data!.video!.author!.id)}`}
+        />
+        <meta
+          property="og:video"
+          content={`https://lp-playback.com/hls/c4desuknua3fxodn/video`}
+        />
+      </Head>
+      <div className="flex flex-col items-center p-8 w-full">
+        <div className="flex flex-col items-center gap-4 max-w-[1100px] min-w-[300px]">
+          <div className="rounded-xl overflow-hidden">
+            {loading ? (
+              <Skeleton
+                style={{
+                  width: "90vw",
+                  maxWidth: "800px",
+                  height: "40vh",
+                }}
+              />
+            ) : (
+              <Player playbackId={data?.video?.playbackId} />
+            )}
+          </div>
+          <div className="flex flex-row gap-4 w-full">
+            <Card className="flex-grow">
+              <CardHeader>
+                {loading ? (
+                  <Skeleton className="w-20 h-4" />
+                ) : (
+                  <CardTitle>{data?.video?.title}</CardTitle>
+                )}
+                {loading ? (
+                  <Skeleton className="w-56 h-4" />
+                ) : (
+                  <CardDescription>{data?.video?.description}</CardDescription>
+                )}
+              </CardHeader>
+              {/* <CardContent>
                 <span className="text-sm">posted {moment(data.video.createdAt).fromNow()}</span>
             </CardContent> */}
+            </Card>
+          </div>
+          <Card className="w-full">
+            <CardHeader className="flex flex-row items-center">
+              <div className="flex flex-col flex-grow">
+                <CardTitle className=" ">Comments</CardTitle>
+                <CardDescription>
+                  Leaving a comment is irreversible. You cannot delete it
+                  afterward.
+                </CardDescription>
+              </div>
+              <div className="flex gap-4">
+                <Input
+                  disabled={sendingComment || !data?.video?.tokenId}
+                  value={comment}
+                  onChange={(e) => setComment(e.currentTarget.value)}
+                  type="text"
+                  placeholder="you should do more of this and more of that..."
+                />
+                <Button
+                  disabled={sendingComment || !data?.video?.tokenId}
+                  onClick={handleComment}
+                >
+                  {sendingComment ? (
+                    <UpdateIcon className="animate-spin" />
+                  ) : (
+                    "Comment"
+                  )}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {comments.map((c: any) => (
+                <div className="flex flex-col" key={c.id}>
+                  <span className="text-sm">{c.text}</span>
+                  <span className="text-xs">by {c.userId}</span>
+                </div>
+              ))}
+            </CardContent>
           </Card>
         </div>
-        <Card className="w-full">
-          <CardHeader className="flex flex-row items-center">
-            <div className="flex flex-col flex-grow">
-              <CardTitle className=" ">Comments</CardTitle>
-              <CardDescription>
-                Leaving a comment is irreversible. You cannot delete it
-                afterward.
-              </CardDescription>
-            </div>
-            <div className="flex gap-4">
-              <Input
-                disabled={sendingComment || !data?.video?.tokenId}
-                value={comment}
-                onChange={(e) => setComment(e.currentTarget.value)}
-                type="text"
-                placeholder="you should do more of this and more of that..."
-              />
-              <Button
-                disabled={sendingComment || !data?.video?.tokenId}
-                onClick={handleComment}
-              >
-                {sendingComment ? (
-                  <UpdateIcon className="animate-spin" />
-                ) : (
-                  "Comment"
-                )}
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {comments.map((c: any) => (
-              <div className="flex flex-col" key={c.id}>
-                <span className="text-sm">{c.text}</span>
-                <span className="text-xs">by {c.userId}</span>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
       </div>
-    </div>
+    </>
   );
+};
+
+export const getServerSideProps = async (ctx: any) => {
+  const { id } = ctx.query;
+  const client = initializeApollo();
+  const parsedId = isUuid.test(id) ? id : uuidTranslator.toUUID(id);
+
+  await client.query({
+    query: GET_VIDEO,
+    variables: {
+      id: parsedId,
+    },
+  });
+
+  return addApolloState(client, {
+    props: {},
+  });
 };
 
 export default Video;

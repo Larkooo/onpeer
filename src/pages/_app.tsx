@@ -22,6 +22,7 @@ import {
   studioProvider,
 } from "@livepeer/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useApollo } from "src/lib/apolloClient";
 
 const livepeer = createReactClient({
   provider: studioProvider({
@@ -29,13 +30,10 @@ const livepeer = createReactClient({
   }),
 });
 
-const client = new ApolloClient({
-  uri: "/api/graphql",
-  cache: new InMemoryCache(),
-});
-
 function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
+
+  const client = useApollo(pageProps);
 
   return (
     <LivepeerConfig client={livepeer}>
