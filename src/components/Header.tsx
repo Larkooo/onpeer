@@ -8,7 +8,6 @@ import {
   useWallet,
 } from "@thirdweb-dev/react";
 import Link from "next/link";
-import { sdk } from "src/pages/api/upload";
 import { useEffect, useState } from "react";
 import Connect from "./Connect";
 import { useRouter } from "next/router";

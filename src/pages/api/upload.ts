@@ -7,7 +7,6 @@ import { NextRequest } from "next/server";
 import { ReadStream, createReadStream, readFile, readFileSync } from "fs";
 import { File } from "buffer";
 import { kv } from "@vercel/kv";
-import { PrismaClient } from "@prisma/client/edge";
 import { Contract } from "constants/contracts";
 import { livepeer, prisma, sdk } from "./graphql";
 
