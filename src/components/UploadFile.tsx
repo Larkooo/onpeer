@@ -101,7 +101,7 @@ export const UploadFile = ({
             ? "Drop your files here"
             : "Drag 'n' drop your files here, or click to select files"}
         </div>
-        <DialogFooter>
+        <DialogFooter className="gap-y-2">
           <div className="text-xs text-gray-400">
             {Object.values(accept as any).join(", ")} supported.
           </div>
@@ -122,7 +122,7 @@ export const UploadFile = ({
             }}
             className="text-xs"
             type="submit"
-            disabled={files.length === 0}
+            disabled={files.length === 0 || uploading}
           >
             {uploading ? (
               <>

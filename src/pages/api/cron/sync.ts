@@ -11,7 +11,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       latestBlockNumber: Contract.blockNumber,
     },
   });
-  const contract = await sdk.getContract(process.env.NEXT_PUBLIC_ONPEER_CONTRACT_ADDRESS!);
+  const contract = await sdk.getContract(
+    process.env.NEXT_PUBLIC_ONPEER_CONTRACT_ADDRESS!
+  );
 
   const latestBlockNumber = await sdk.getProvider().getBlockNumber();
   const events = await contract.events.getAllEvents({
@@ -24,8 +26,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return {
       createdAt: new Date(asset.createdAt!),
       playbackId: asset.playbackId!,
-    }
-  }
+    };
+  };
 
   let tx: any[] = [];
   for (const event of events) {
@@ -51,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               authorId: data.author,
               mintTx: event.transaction.transactionHash,
               tokenId: data.tokenId.toHexString(),
-              ...(await dumpAssetData(data.uid))
+              ...(await dumpAssetData(data.uid)),
             },
           })
         );
@@ -112,13 +114,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-    await prisma.$transaction(tx);
-    await prisma.sync.update({
-      where: { chainId: Contract.chain.chainId },
-      data: {
-        latestBlockNumber,
-      },
-    });
+  await prisma.$transaction(tx);
+  const sync = await prisma.sync.update({
+    where: { chainId: Contract.chain.chainId },
+    data: {
+      latestBlockNumber,
+    },
+  });
+
+  return res.status(200).json(sync);
 };
 
 export default handler;
