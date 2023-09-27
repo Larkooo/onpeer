@@ -132,17 +132,17 @@ const Video = () => {
         <meta name="twitter:player:height" content="480" />
         <meta
           name="twitter:player:stream"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={`https://gifconvert.vxtwitter.com/convert.mp4?url=https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
         <meta name="twitter:player:stream:content_type" content="video/mp4" />
 
         <meta
           property="og:video"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={`https://gifconvert.vxtwitter.com/convert.mp4?url=https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
         <meta
           property="og:video:secure_url"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={`https://gifconvert.vxtwitter.com/convert.mp4?url=https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
         <meta property="og:video:type" content="video/mp4" />
         <meta property="og:video:width" content="720" />
