@@ -126,9 +126,26 @@ const Video = () => {
           property="twitter:site"
           content={`Onpeer - ${formatAddress(data!.video!.author!.id)}`}
         />
+        <meta name="twitter:player:width" content="720" />
+        <meta name="twitter:player:height" content="480" />
+        <meta
+          name="twitter:player:stream"
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+        />
+        <meta name="twitter:player:stream:content_type" content="video/mp4" />
+
+        <meta property="og:url" content={window.location.href} />
         <meta
           property="og:video"
-          content={`https://lp-playback.com/hls/c4desuknua3fxodn/video`}
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+        />
+        <meta property="og:video:secure_url" content="{{ vidurl }}" />
+        <meta property="og:video:type" content="video/mp4" />
+        <meta property="og:video:width" content="720" />
+        <meta property="og:video:height" content="480" />
+        <meta
+          property="og:video"
+          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
         />
       </Head>
       <div className="flex flex-col items-center p-8 w-full">
