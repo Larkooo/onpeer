@@ -104,7 +104,7 @@ const Video = () => {
     <div className="flex flex-col items-center p-8 w-full">
       <div className="flex flex-col items-center gap-4 max-w-[1100px] min-w-[300px]">
         <Card>
-          <CardHeader></CardHeader>
+          <CardHeader className="pb-0"></CardHeader>
           <CardContent>
             <div className="rounded-xl overflow-hidden">
               {loading ? (
