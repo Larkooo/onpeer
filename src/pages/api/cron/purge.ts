@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client/edge";
+import { prisma } from "src/lib/providers";
 
-const prisma = new PrismaClient();
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const prunable = await prisma.video.findMany({
     where: {

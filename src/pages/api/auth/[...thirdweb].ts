@@ -1,6 +1,6 @@
 import { ThirdwebAuth } from "@thirdweb-dev/auth/next";
 import { PrivateKeyWallet } from "@thirdweb-dev/auth/evm";
-import { prisma } from "../graphql";
+import { prisma } from "src/lib/providers";
 
 export const onpeerWallet = new PrivateKeyWallet(
   process.env.THIRDWEB_AUTH_PRIVATE_KEY!

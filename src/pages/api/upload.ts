@@ -8,7 +8,7 @@ import { ReadStream, createReadStream, readFile, readFileSync } from "fs";
 import { File } from "buffer";
 import { kv } from "@vercel/kv";
 import { Contract } from "constants/contracts";
-import { livepeer, prisma, sdk } from "./graphql";
+import { livepeer, prisma, sdk } from "src/lib/providers";
 
 //set bodyparser
 export const config = {
