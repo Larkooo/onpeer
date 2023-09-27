@@ -117,7 +117,7 @@ const Video = () => {
                   }}
                 />
               ) : (
-                <Player playbackId={data?.video.playbackId} />
+                <Player playbackId={data?.video?.playbackId} />
               )}
             </div>
           </CardContent>
