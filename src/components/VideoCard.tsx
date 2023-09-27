@@ -22,6 +22,7 @@ import MintDialog from "./MintDialog";
 import { Ref, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import shortUUID from "short-uuid";
 
 interface VideoCardProps {
   id: string;
@@ -47,7 +48,6 @@ const VideoCard = ({
   const { push } = useRouter();
 
   const toSign = (user?.data as any)?.mintSignatures?.[id];
-  console.log(toSign);
 
   return (
     <div className="relative">
@@ -67,7 +67,7 @@ const VideoCard = ({
           </TooltipContent>
         </Tooltip>
       </div>
-      <Card onClick={() => push(id)} className="cursor-pointer relative transition-all hover:brightness-90 overflow-hidden">
+      <Card onClick={() => push(shortUUID().fromUUID(id))} className="cursor-pointer relative transition-all hover:brightness-90 overflow-hidden">
         <CardHeader className="px-4 pb-0 pt-4">
           <CardTitle className="text-ellipsis  whitespace-nowrap overflow-hidden pr-3">
             {title || "no title"}
