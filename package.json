@@ -7,7 +7,7 @@
     "build": "yarn prisma:generate && next build",
     "start": "yarn prisma generate && next start",
     "lint": "next lint",
-    "apollo:generate": "bunx apollo@latest codegen:generate --target=typescript --tagName=gql --globalTypesFile=./__generated__/globalTypes.d.ts",
+    "apollo:generate": "bunx apollo@latest codegen:generate --target=typescript --tagName=gql --tsFileExtension=d.ts",
     "prisma:generate": "yarn prisma generate",
     "prisma:migrate": "dotenv -e .env.development.local -- yarn prisma migrate deploy"
   },
