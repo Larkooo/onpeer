@@ -22,7 +22,6 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import shortUUID, { uuid } from "short-uuid";
-import { prisma } from "./api/upload";
 import { GetVideo } from "./__generated__/GetVideo";
 
 const GET_VIDEO = gql`
