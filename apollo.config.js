@@ -2,7 +2,7 @@ module.exports = {
   client: {
     service: {
       name: "onpeer",
-      url: "https://onpeer.vercel.app/api/graphql",
+      url: "http://localhost:3000/api/graphql",
     },
   },
 };
