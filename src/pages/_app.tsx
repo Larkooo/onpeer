@@ -11,7 +11,7 @@ import {
   RoundedBox,
   useCubeCamera,
 } from "@react-three/drei";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
@@ -23,6 +23,7 @@ import {
 } from "@livepeer/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useApollo } from "src/lib/apolloClient";
+import Head from "next/head";
 
 const livepeer = createReactClient({
   provider: studioProvider({
@@ -48,6 +49,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             authUrl: "/api/auth",
           }}
         >
+          <Head>
+            <title>onpeer</title>
+            <meta name="theme-color" content="e9590c" />
+          </Head>
           <TooltipProvider>
             {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
         <Scene />
