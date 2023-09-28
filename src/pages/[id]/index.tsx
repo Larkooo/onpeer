@@ -112,11 +112,6 @@ const Video = () => {
         <meta property="og:type" content="video.other" />
         <meta property="og:title" content={data?.video?.title} />
         <meta property="og:description" content={data?.video?.description} />
-        <meta property="og:url" content={`https://onpeer.vercel.app/${id}`} />
-        <meta
-          property="og:site_name"
-          content={`Onpeer - ${formatAddress(data!.video!.author!.id)}`}
-        />
         <meta property="og:video:type" content="video/mp4" />
         <meta property="og:video:width" content="720" />
         <meta property="og:video:height" content="480" />
@@ -137,6 +132,13 @@ const Video = () => {
         <meta
           property="og:video:secure_url"
           content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+        />
+
+        <link
+          rel="alternate"
+          type="application/json+oembed"
+          href={`https://onpeer.vercel.app/api/oembed?id=${parsedId}`}
+          title="onpeer"
         />
       </Head>
       <div className="flex flex-col items-center p-8 w-full">
@@ -228,9 +230,6 @@ export const getServerSideProps = async (ctx: any) => {
       id: parsedId,
     },
   });
-
-  let sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
-  await sleep(5000);
 
   return addApolloState(client, {
     props: {},

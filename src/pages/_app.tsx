@@ -51,7 +51,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         >
           <Head>
             <title>onpeer</title>
-            <meta name="theme-color" content="e9590c" />
+            <meta name="site_name" content="onpeer" />
+            <meta name="og:url" content="https://onpeer.vercel.app" />
+            <meta name="theme-color" content="#e9590c" />
           </Head>
           <TooltipProvider>
             {/* <div className="absolute w-full h-full -z-1" id="canvas-container">
