@@ -89,12 +89,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       case "VideoAssetUnliked":
         tx.push(
-          prisma.like.delete({
+          prisma.like.deleteMany({
             where: {
-              userId_videoId: {
-                videoId: data.uid,
-                userId: data.liker,
-              },
+              userId: data.liker,
+              videoId: data.uid,
             },
           })
         );

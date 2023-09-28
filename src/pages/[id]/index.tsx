@@ -10,8 +10,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { gql, useQuery } from "@apollo/client";
-import { Player } from "@livepeer/react";
-import { UpdateIcon } from "@radix-ui/react-icons";
+import { PlaybackInfo, Player, ViewsMetrics } from "@livepeer/react";
+import {
+  EyeOpenIcon,
+  HeartFilledIcon,
+  HeartIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
 import {
   TransactionResult,
   useAddress,
@@ -25,6 +30,7 @@ import shortUUID, { uuid } from "short-uuid";
 import { GetVideo } from "../__generated__/GetVideo";
 import { addApolloState, initializeApollo } from "src/lib/apolloClient";
 import Head from "next/head";
+import { livepeer } from "src/lib/providers";
 
 const GET_VIDEO = gql`
   query GetVideo($id: String!) {
@@ -59,7 +65,13 @@ const uuidTranslator = shortUUID();
 const formatAddress = (address: string) =>
   `${address.slice(0, 6)}...${address.slice(-4)}`;
 
-const Video = () => {
+const Video = ({
+  playbackInfo,
+  metrics,
+}: {
+  playbackInfo: PlaybackInfo;
+  metrics: ViewsMetrics;
+}) => {
   const router = useRouter();
   const id = router.query.id as string;
   const parsedId = id && (isUuid.test(id) ? id : uuidTranslator.toUUID(id));
@@ -67,8 +79,7 @@ const Video = () => {
   const address = useAddress();
 
   const { contract } = useContract(Contract.address!);
-  const [sendingComment, setSendingComment] = useState(false);
-  const [sendingLike, setSendingLike] = useState(false);
+  const [pendingOp, setPendingOp] = useState<"like" | "undoLike" | "comment">();
 
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<any[]>([]);
@@ -85,24 +96,37 @@ const Video = () => {
     },
   });
 
-  const handleComment = async () => {
-    if (!comment) return;
+  const handleOp = async (op: typeof pendingOp) => {
+    if (op === "comment" && !comment) return;
 
-    setSendingComment(true);
+    let args = [data!.video!.tokenId];
+    if (op === "comment") args.push(comment);
+
+    setPendingOp(op);
     contract!
-      .call("comment", [data!.video!.tokenId, comment])
+      .call(op!, args)
       .then((tx: any) => {
-        setComments((comments) => [
-          ...comments,
-          { userId: address, text: comment, tx: tx.receipt.transactionHash },
-        ]);
-        setComment("");
+        switch (op) {
+          case "like":
+            setLikes([...likes, { userId: address }]);
+            break;
+          case "undoLike":
+            setLikes(likes.filter((l) => l.userId !== address));
+            break;
+          case "comment":
+            setComments([
+              ...comments,
+              { id: tx.hash, userId: address, text: comment, tx },
+            ]);
+            setComment("");
+            break;
+        }
       })
       .catch((e) => {
         console.log(e);
       })
       .finally(() => {
-        setSendingComment(false);
+        setPendingOp(undefined);
       });
   };
 
@@ -111,7 +135,10 @@ const Video = () => {
       <Head>
         <title>{data?.video?.title}</title>
         <meta name="description" content={data?.video?.description} />
-        <meta property="og:url" content={`https://onpeer.vercel.app/${parsedId}`} />
+        <meta
+          property="og:url"
+          content={`https://onpeer.vercel.app/${parsedId}`}
+        />
         <meta property="og:type" content="video.other" />
         <meta property="og:title" content={data?.video?.title} />
         <meta property="og:description" content={data?.video?.description} />
@@ -165,12 +192,46 @@ const Video = () => {
                 {loading ? (
                   <Skeleton className="w-20 h-4" />
                 ) : (
-                  <CardTitle>{data?.video?.title}</CardTitle>
+                  <CardTitle className="flex flex-row gap-4">
+                    <span className="flex-grow">
+                      {data?.video?.title || "no title"}
+                    </span>
+                    <div className="flex gap-1">
+                      {metrics?.metrics?.[0]?.startViews || 0} <EyeOpenIcon />
+                    </div>
+                    <div
+                      className={`${
+                        (pendingOp === "like" || pendingOp === "undoLike") &&
+                        "animate-pulse"
+                      } flex gap-1`}
+                    >
+                      {likes.length}{" "}
+                      {likes.some((l) => l.userId === address) ||
+                      pendingOp === "like" ? (
+                        <HeartFilledIcon
+                          onClick={() => handleOp("undoLike")}
+                          className={`transition-all cursor-pointer hover:scale-150`}
+                        />
+                      ) : (
+                        <HeartIcon
+                          onClick={() => handleOp("like")}
+                          className="transition-all cursor-pointer hover:scale-150"
+                        />
+                      )}
+                    </div>
+                  </CardTitle>
                 )}
                 {loading ? (
                   <Skeleton className="w-56 h-4" />
                 ) : (
-                  <CardDescription>{data?.video?.description}</CardDescription>
+                  <CardDescription className="flex flex-row">
+                    <span className="flex-grow">
+                      {data?.video?.description || "no description"}
+                    </span>
+                    <span>
+                      {"posted " + moment().to(data?.video?.createdAt)}
+                    </span>
+                  </CardDescription>
                 )}
               </CardHeader>
               {/* <CardContent>
@@ -179,7 +240,7 @@ const Video = () => {
             </Card>
           </div>
           <Card className="w-full">
-            <CardHeader className="flex flex-row items-center">
+            <CardHeader className="flex sm:flex-row ">
               <div className="flex flex-col flex-grow">
                 <CardTitle className=" ">Comments</CardTitle>
                 <CardDescription>
@@ -189,17 +250,17 @@ const Video = () => {
               </div>
               <div className="flex gap-4">
                 <Input
-                  disabled={sendingComment || !data?.video?.tokenId}
+                  disabled={pendingOp === "comment" || !data?.video?.tokenId}
                   value={comment}
                   onChange={(e) => setComment(e.currentTarget.value)}
                   type="text"
                   placeholder="you should do more of this and more of that..."
                 />
                 <Button
-                  disabled={sendingComment || !data?.video?.tokenId}
-                  onClick={handleComment}
+                  disabled={pendingOp === "comment" || !data?.video?.tokenId}
+                  onClick={() => handleOp("comment")}
                 >
-                  {sendingComment ? (
+                  {pendingOp === "comment" ? (
                     <UpdateIcon className="animate-spin" />
                   ) : (
                     "Comment"
@@ -227,15 +288,26 @@ export const getServerSideProps = async (ctx: any) => {
   const client = initializeApollo();
   const parsedId = isUuid.test(id) ? id : uuidTranslator.toUUID(id);
 
-  await client.query({
+  const res = await client.query({
     query: GET_VIDEO,
     variables: {
       id: parsedId,
     },
   });
 
+  const playbackInfo = await livepeer.getPlaybackInfo({
+    playbackId: res.data.video.playbackId,
+  });
+
+  const metrics = await livepeer.getAssetMetrics({
+    assetId: parsedId,
+  });
+
   return addApolloState(client, {
-    props: {},
+    props: {
+      playbackInfo: JSON.parse(JSON.stringify(playbackInfo)),
+      metrics,
+    },
   });
 };
 
