@@ -143,25 +143,25 @@ const Video = ({
         <meta property="og:title" content={data?.video?.title} />
         <meta property="og:description" content={data?.video?.description} />
         <meta property="og:video:type" content="video/mp4" />
-        <meta property="og:video:width" content="720" />
-        <meta property="og:video:height" content="480" />
+        <meta property="og:video:width" content={playbackInfo.meta.source[0].width?.toString()} />
+        <meta property="og:video:height" content={playbackInfo.meta.source[0].height?.toString()} />
 
         <meta property="twitter:title" content={data?.video?.title} />
-        <meta name="twitter:player:width" content="720" />
-        <meta name="twitter:player:height" content="480" />
+        <meta name="twitter:player:width" content={playbackInfo.meta.source[0].width?.toString()} />
+        <meta name="twitter:player:height" content={playbackInfo.meta.source[0].height?.toString()} />
         <meta
           name="twitter:player:stream"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={playbackInfo.meta.source[0].url}
         />
-        <meta name="twitter:player:stream:content_type" content="video/mp4" />
+        <meta name="twitter:player:stream:content_type" content={playbackInfo.meta.source[0].type.replace("html5/", "")} />
 
         <meta
           property="og:video"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={playbackInfo.meta.source[0].url}
         />
         <meta
           property="og:video:secure_url"
-          content={`https://lp-playback.com/hls/${data?.video?.playbackId}/video`}
+          content={playbackInfo.meta.source[0].url}
         />
 
         <link
