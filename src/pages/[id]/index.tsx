@@ -109,6 +109,9 @@ const Video = () => {
   return (
     <>
       <Head>
+        <title>{data?.video?.title}</title>
+        <meta name="description" content={data?.video?.description} />
+        <meta property="og:url" content={`https://onpeer.vercel.app/${parsedId}`} />
         <meta property="og:type" content="video.other" />
         <meta property="og:title" content={data?.video?.title} />
         <meta property="og:description" content={data?.video?.description} />
