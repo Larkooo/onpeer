@@ -19,6 +19,8 @@ import {
   HeartIcon,
   Link1Icon,
   Link2Icon,
+  Pencil1Icon,
+  Pencil2Icon,
   PersonIcon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
@@ -39,6 +41,7 @@ import { Video } from "@prisma/client";
 import { GetVideoLikesComments } from "./__generated__/GetVideoLikesComments";
 import { formatHash } from "src/lib/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import VideoMetadataDialog from "src/components/VideoMetadataDialog";
 
 const GET_VIDEO_LIKES_COMMENTS = gql`
   query GetVideoLikesComments($id: String!) {
@@ -95,6 +98,8 @@ const Video = ({
     setComments(data.comments);
   }, [data]);
 
+  const [title, setTitle] = useState(video.title);
+  const [description, setDescription] = useState(video.description);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<any[]>([]);
   const [likes, setLikes] = useState<any[]>([]);
@@ -145,14 +150,14 @@ const Video = ({
     <>
       <Head>
         <title>{video.title}</title>
-        <meta name="description" content={video.description} />
+        <meta name="description" content={description} />
         <meta
           property="og:url"
           content={`https://onpeer.vercel.app/${parsedId}`}
         />
         <meta property="og:type" content="video.other" />
         <meta property="og:title" content={video.title} />
-        <meta property="og:description" content={video.description} />
+        <meta property="og:description" content={description} />
         <meta
           property="og:video:type"
           content={playbackInfo.meta.source[0].type.replace("html5/", "")}
@@ -256,7 +261,23 @@ const Video = ({
             <Card className="w-full">
               <CardHeader>
                 <CardTitle className="flex flex-row gap-4">
-                  <span className="flex-grow">{video.title || "no title"}</span>
+                  <span className="flex flex-grow gap-1">
+                    {video.title || "no title"}
+                    {video.authorId === address && (
+                      <VideoMetadataDialog
+                        button={
+                          <Pencil1Icon className="cursor-pointer text-orange-600 transition-all hover:rotate-12 hover:scale-125" />
+                        }
+                        currentTitle={video.title}
+                        currentDescription={description}
+                        tokenId={video.tokenId!}
+                        onUpdated={(title, description) => {
+                          setTitle(title);
+                          setDescription(description);
+                        }}
+                      />
+                    )}
+                  </span>
                   <div className="flex gap-1">
                     {loadingLikesComments ? (
                       <Skeleton className="w-6" />
@@ -269,7 +290,7 @@ const Video = ({
                     className={`${
                       (pendingOp === "like" || pendingOp === "undoLike") &&
                       "animate-pulse"
-                    } flex gap-1`}
+                    } flex gap-1 text-orange-600`}
                   >
                     {loadingLikesComments ? (
                       <Skeleton className="w-6" />
@@ -280,12 +301,20 @@ const Video = ({
                     pendingOp === "like" ? (
                       <HeartFilledIcon
                         onClick={() => handleOp("undoLike")}
-                        className={`transition-all cursor-pointer hover:scale-150`}
+                        className={`transition-all ${
+                          pendingOp !== "undoLike" && pendingOp !== "like"
+                            ? "cursor-pointer hover:scale-150"
+                            : ""
+                        }`}
                       />
                     ) : (
                       <HeartIcon
                         onClick={() => handleOp("like")}
-                        className="transition-all cursor-pointer hover:scale-150"
+                        className={`transition-all ${
+                          pendingOp !== "undoLike"
+                            ? "cursor-pointer hover:scale-150"
+                            : ""
+                        }`}
                       />
                     )}
                   </div>
@@ -293,7 +322,7 @@ const Video = ({
 
                 <CardDescription className="flex flex-row">
                   <span className="flex-grow">
-                    {video.description || "no description"}
+                    {description || "no description"}
                   </span>
                   <span>{"posted " + moment().to(video.createdAt)}</span>
                 </CardDescription>
@@ -335,7 +364,10 @@ const Video = ({
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
                 {comments.map((c) => (
-                  <div className="flex flex-col items-start w-full min-w-0" key={c.id}>
+                  <div
+                    className="flex flex-col items-start w-full min-w-0"
+                    key={c.id}
+                  >
                     <span className="text-sm flex-grow">{c.text}</span>
                     <span className="text-xs font-semibold flex flex-row gap-1">
                       from{" "}
