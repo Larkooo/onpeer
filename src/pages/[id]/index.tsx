@@ -12,9 +12,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { gql, useQuery } from "@apollo/client";
 import { PlaybackInfo, Player, ViewsMetrics } from "@livepeer/react";
 import {
+  CubeIcon,
+  ExternalLinkIcon,
   EyeOpenIcon,
   HeartFilledIcon,
   HeartIcon,
+  Link1Icon,
+  Link2Icon,
+  PersonIcon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
 import {
@@ -32,6 +37,8 @@ import Head from "next/head";
 import { livepeer, prisma } from "src/lib/providers";
 import { Video } from "@prisma/client";
 import { GetVideoLikesComments } from "./__generated__/GetVideoLikesComments";
+import { formatHash } from "src/lib/format";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const GET_VIDEO_LIKES_COMMENTS = gql`
   query GetVideoLikesComments($id: String!) {
@@ -104,7 +111,10 @@ const Video = ({
       .then((tx: any) => {
         switch (op) {
           case "like":
-            setLikes([...likes, { userId: address, tx: tx.receipt.transactionHash }]);
+            setLikes([
+              ...likes,
+              { userId: address, tx: tx.receipt.transactionHash },
+            ]);
             break;
           case "undoLike":
             setLikes(likes.filter((l) => l.userId !== address));
@@ -112,7 +122,12 @@ const Video = ({
           case "comment":
             setComments([
               ...comments,
-              { id: tx.receipt.transactionHash, userId: address, text: comment, tx: tx.receipt.transactionHash },
+              {
+                id: tx.receipt.transactionHash,
+                userId: address,
+                text: comment,
+                tx: tx.receipt.transactionHash,
+              },
             ]);
             setComment("");
             break;
@@ -138,7 +153,10 @@ const Video = ({
         <meta property="og:type" content="video.other" />
         <meta property="og:title" content={video.title} />
         <meta property="og:description" content={video.description} />
-        <meta property="og:video:type" content="video/mp4" />
+        <meta
+          property="og:video:type"
+          content={playbackInfo.meta.source[0].type.replace("html5/", "")}
+        />
         <meta
           property="og:video:width"
           content={playbackInfo.meta.source[0].width?.toString()}
@@ -179,13 +197,63 @@ const Video = ({
           title="onpeer"
         />
       </Head>
-      <div className="flex flex-col items-center p-8 w-full">
-        <div className="flex flex-col items-center gap-4 max-w-[1100px] min-w-[300px]">
-          <div className="rounded-xl overflow-hidden">
-            <Player playbackId={video.playbackId} />
+      <div className="flex flex-col items-center h-full justify-center p-8 w-full">
+        <div className="flex flex-col 2xl:flex-row 2xl:max-h-[60vh] items-start gap-4 min-w-[300px]">
+          <div className="flex flex-col flex-grow w-full gap-2 2xl:max-w-[900px]">
+            <div className="rounded-xl overflow-hidden">
+              <Player playbackId={video.playbackId} />
+            </div>
+            <Card className="">
+              <CardHeader className="flex flex-row items-center px-6 py-3 gap-2">
+                <div className="flex-grow">
+                  <CardTitle className="text-sm flex items-center gap-1">
+                    {formatAddress(video.authorId)}
+                    <PersonIcon />
+                  </CardTitle>
+                  {/* transaction hash */}
+                  <a
+                    href={`${Contract.chain.explorers?.[0].url}/tx/${video.mintTx}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <CardDescription
+                      style={{
+                        marginTop: "0px",
+                      }}
+                      className="flex gap-1 items-center hover:underline"
+                    >
+                      {formatHash(video.mintTx!)} <ExternalLinkIcon />
+                    </CardDescription>
+                  </a>
+                </div>
+                <Button
+                  className=""
+                  variant="outline"
+                  onClick={(e) => {
+                    navigator.clipboard.writeText(
+                      `https://onpeer.vercel.app/${id}`
+                    );
+                    e.currentTarget.children[0].animate(
+                      {
+                        transform: ["scale(1)", "scale(0.8)", "scale(1)"],
+                      },
+                      {
+                        duration: 300,
+                        easing: "ease-in-out",
+                        direction: "alternate",
+                        fill: "forwards",
+                      }
+                    );
+                  }}
+                >
+                  <Link1Icon />
+                </Button>
+              </CardHeader>
+            </Card>
           </div>
-          <div className="flex flex-row gap-4 w-full">
-            <Card className="flex-grow">
+
+          <div className="flex flex-col flex-shrink h-full w-full gap-2 2xl:max-w-[40vw]">
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle className="flex flex-row gap-4">
                   <span className="flex-grow">{video.title || "no title"}</span>
@@ -234,45 +302,64 @@ const Video = ({
                 <span className="text-sm">posted {moment(data.video.createdAt).fromNow()}</span>
             </CardContent> */}
             </Card>
-          </div>
-          <Card className="w-full">
-            <CardHeader className="flex sm:flex-row ">
-              <div className="flex flex-col flex-grow">
-                <CardTitle className=" ">Comments</CardTitle>
-                <CardDescription>
-                  Leaving a comment is irreversible. You cannot delete it
-                  afterward.
-                </CardDescription>
-              </div>
-              <div className="flex gap-4">
-                <Input
-                  disabled={pendingOp === "comment" || !video.tokenId}
-                  value={comment}
-                  onChange={(e) => setComment(e.currentTarget.value)}
-                  type="text"
-                  placeholder="you should do more of this and more of that..."
-                />
-                <Button
-                  disabled={pendingOp === "comment" || !video.tokenId}
-                  onClick={() => handleOp("comment")}
-                >
-                  {pendingOp === "comment" ? (
-                    <UpdateIcon className="animate-spin" />
-                  ) : (
-                    "Comment"
-                  )}
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {comments.map(c => (
-                <div className="flex flex-col" key={c.id}>
-                  <span className="text-sm">{c.text}</span>
-                  <span className="text-xs">by {c.userId}</span>
+            <Card className="h-full w-full max-h-full overflow-y-scroll whitespace-break-spaces">
+              <CardHeader className="flex sm:flex-row ">
+                <div className="flex flex-col flex-grow">
+                  <CardTitle className=" ">Comments</CardTitle>
+                  <CardDescription>
+                    Leaving a comment is irreversible. You cannot delete it
+                    afterward.
+                  </CardDescription>
                 </div>
-              ))}
-            </CardContent>
-          </Card>
+                <div className="flex gap-4">
+                  <Input
+                    disabled={pendingOp === "comment" || !video.tokenId}
+                    value={comment}
+                    onChange={(e) => setComment(e.currentTarget.value)}
+                    type="text"
+                    placeholder="you should do more of this and more of that..."
+                  />
+                  <Button
+                    disabled={pendingOp === "comment" || !video.tokenId}
+                    onClick={() => handleOp("comment")}
+                  >
+                    <span
+                      className={`${
+                        pendingOp === "comment" ? "animate-pulse" : ""
+                      }`}
+                    >
+                      Comment
+                    </span>
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-2">
+                {comments.map((c) => (
+                  <div className="flex flex-col items-start w-full min-w-0" key={c.id}>
+                    <span className="text-sm flex-grow">{c.text}</span>
+                    <span className="text-xs font-semibold flex flex-row gap-1">
+                      from{" "}
+                      <span className="text-gray-500">
+                        {formatAddress(c.userId)}
+                      </span>{" "}
+                      at
+                      <a
+                        className="flex flex-row gap-1 hover:underline"
+                        href={`${Contract.chain.explorers?.[0].url}/tx/${c.tx}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <span className="bg-gradient-to-r from-orange-600 to-purple-700 bg-clip-text text-transparent">
+                          {formatHash(c.tx!)}
+                        </span>
+                        <ExternalLinkIcon />
+                      </a>
+                    </span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </>
