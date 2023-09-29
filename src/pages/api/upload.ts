@@ -54,6 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       {
         name: file.originalFilename!,
         file: createReadStream(file.filepath),
+        creatorId: user.address,
       },
     ],
   });
