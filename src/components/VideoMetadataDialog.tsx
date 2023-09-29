@@ -56,7 +56,7 @@ const VideoMetadataDialog = ({
       .finally(() => {
         setLoading(false);
       });
-  }, [contract]);
+  }, [contract, title, description]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
