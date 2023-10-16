@@ -90,7 +90,8 @@ const VideoCard = ({
           </CardHeader>
           <CardContent className="pb-0 px-0 pt-2 relative">
             <div className="flex h-40 items-center justify-center bg-black/5">
-              <video muted onMouseEnter={async (e) => {
+              <video autoPlay onMouseEnter={async (e) => {
+                e.currentTarget.volume = 0;
                 await e.currentTarget.play();
               }} onMouseLeave={async (e) => {
                 e.currentTarget.currentTime = 0;
