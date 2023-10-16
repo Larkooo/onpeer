@@ -90,16 +90,32 @@ const VideoCard = ({
           </CardHeader>
           <CardContent className="pb-0 px-0 pt-2 relative">
             <div className="flex h-40 items-center justify-center bg-black/5">
-              <video autoPlay onMouseEnter={async (e) => {
-                e.currentTarget.volume = 0;
-                await e.currentTarget.play();
-              }} onMouseLeave={async (e) => {
-                e.currentTarget.currentTime = 0;
-                await e.currentTarget.pause();
-              }} className="h-full w-full object-cover">
+              <video
+                // autoplay the video to load the first frame
+                // we pause & mute it afterwards
+                autoPlay
+                onLoad={async (e) => {
+                  e.currentTarget.volume = 0;
+                  await e.currentTarget.pause();
+                }}
+
+                // play video on hover
+                onMouseEnter={async (e) => {
+                  await e.currentTarget.play();
+                }}
+                // reset video
+                onMouseLeave={async (e) => {
+                  e.currentTarget.currentTime = 0;
+                  await e.currentTarget.pause();
+                }}
+                className="h-full w-full object-cover"
+              >
                 <source
                   src={playback.data?.meta.source[0].url}
-                  type={playback.data?.meta.source[0].type.replace("html5/", "")}
+                  type={playback.data?.meta.source[0].type.replace(
+                    "html5/",
+                    ""
+                  )}
                 />
               </video>
             </div>
