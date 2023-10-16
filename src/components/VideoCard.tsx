@@ -95,12 +95,12 @@ const VideoCard = ({
                 // we pause & mute it afterwards
                 autoPlay
                 onLoad={async (e) => {
-                  e.currentTarget.volume = 0;
                   await e.currentTarget.pause();
                 }}
 
                 // play video on hover
                 onMouseEnter={async (e) => {
+                  e.currentTarget.muted = true;
                   await e.currentTarget.play();
                 }}
                 // reset video
