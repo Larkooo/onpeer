@@ -19,12 +19,13 @@ import { Player, useAssetMetrics, usePlaybackInfo } from "@livepeer/react";
 import { ExclamationTriangleIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { useAddress, useUser } from "@thirdweb-dev/react";
 import MintDialog from "./MintDialog";
-import { Ref, useEffect, useRef, useState } from "react";
+import { LegacyRef, Ref, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import shortUUID from "short-uuid";
 import Link from "next/link";
 import usePageLoad from "src/hooks/usePageLoad";
+import ReactPlayer from "react-player";
 
 interface VideoCardProps {
   id: string;
@@ -45,6 +46,8 @@ const VideoCard = ({
   mintTx,
   createdAt,
 }: VideoCardProps) => {
+  const video = useRef<ReactPlayer>();
+
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
 
@@ -58,7 +61,7 @@ const VideoCard = ({
   });
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <div className="z-50 absolute top-4 right-4">
         <Tooltip>
           <TooltipTrigger>
@@ -96,28 +99,27 @@ const VideoCard = ({
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-0 px-0 pt-2 relative">
-            <div className="flex h-40 items-center justify-center bg-black/5">
-              <video
+            <div
+              onMouseEnter={async () => {
+                await video.current!.getInternalPlayer().play();
+              }}
+              // reset video
+              onMouseLeave={async () => {
+                video.current!.seekTo(0);
+                await video.current!.getInternalPlayer().pause();
+              }}
+              className="flex h-40 object-center items-center justify-center bg-black/5"
+            >
+              <ReactPlayer
+                ref={video as any}
+                width="100%"
+                height="100%"
+                className="[&>video]:object-cover"
                 muted
-                // play video on hover
-                onMouseEnter={async (e) => {
-                  await e.currentTarget.play();
-                }}
-                // reset video
-                onMouseLeave={async (e) => {
-                  e.currentTarget.currentTime = 0;
-                  await e.currentTarget.pause();
-                }}
-                className="h-full w-full object-cover"
-              >
-                <source
-                  src={playback.data?.meta.source[0].url + "#t=0.1"}
-                  type={playback.data?.meta.source[0].type.replace(
-                    "html5/",
-                    ""
-                  )}
-                />
-              </video>
+                url={playback.data?.meta?.source.map((s) => ({
+                  src: s.url,
+                }))}
+              />
             </div>
           </CardContent>
         </Card>

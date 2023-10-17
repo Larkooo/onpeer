@@ -55,6 +55,7 @@
     "react": "^18.2",
     "react-dom": "^18.2",
     "react-dropzone": "^14.2.3",
+    "react-player": "^2.13.0",
     "reflect-metadata": "^0.1.13",
     "short-uuid": "^4.2.2",
     "tailwind-merge": "^1.14.0",

@@ -23,8 +23,7 @@ const GET_VIDEOS = gql`
 `;
 
 const Dashboard = () => {
-  const address = useAddress();
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const { data, loading, error } = useQuery(GET_VIDEOS, {
     variables: {
       authorId: user?.address,
@@ -34,10 +33,10 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!address) {
+    if (!isLoading && !user?.address) {
       router.replace("/");
     }
-  }, [address]);
+  }, [user]);
 
   return (
     <div className="flex flex-col p-4 gap-2">
