@@ -32,7 +32,7 @@ const VideoMetadataDialog = ({
   tokenId,
   currentTitle,
   currentDescription,
-  onUpdated
+  onUpdated,
 }: MintDialogProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,12 +71,14 @@ const VideoMetadataDialog = ({
             available on the blockchain.
             <br />
             <input
+              disabled={loading}
               className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500"
               placeholder={currentTitle}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
             <textarea
+              disabled={loading}
               className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500"
               placeholder={currentDescription}
               value={description}
@@ -85,12 +87,14 @@ const VideoMetadataDialog = ({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose>
-            <Button variant="outline">{tx ? "Done" : "Cancel"}</Button>
-          </DialogClose>
+          {!loading && (
+            <DialogClose>
+              <Button variant="outline">{tx ? "Done" : "Cancel"}</Button>
+            </DialogClose>
+          )}
           {!tx && (
             <Button disabled={loading} onClick={handleUpdate}>
-              {loading ? "Updating..." : "Update"}
+              {loading ? <span className="animate-pulse">Updating...</span> : "Update"}
             </Button>
           )}
         </DialogFooter>
