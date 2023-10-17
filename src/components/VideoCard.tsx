@@ -91,14 +91,7 @@ const VideoCard = ({
           <CardContent className="pb-0 px-0 pt-2 relative">
             <div className="flex h-40 items-center justify-center bg-black/5">
               <video
-                // autoplay the video to load the first frame
-                // we pause & mute it afterwards
-                autoPlay
-                onCanPlay={async (e) => {
-                  e.currentTarget.muted = true;
-                  await e.currentTarget.pause();
-                }}
-
+                muted
                 // play video on hover
                 onMouseEnter={async (e) => {
                   await e.currentTarget.play();
@@ -111,7 +104,7 @@ const VideoCard = ({
                 className="h-full w-full object-cover"
               >
                 <source
-                  src={playback.data?.meta.source[0].url}
+                  src={playback.data?.meta.source[0].url + "#t=0.1"}
                   type={playback.data?.meta.source[0].type.replace(
                     "html5/",
                     ""
