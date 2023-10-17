@@ -7,6 +7,7 @@
     "build": "yarn prisma:generate && next build",
     "start": "yarn prisma generate && next start",
     "lint": "next lint",
+    "indexer": "bun indexer/main.ts",
     "apollo:generate": "bunx apollo@latest codegen:generate --target=typescript --tagName=gql --tsFileExtension=d.ts",
     "prisma:generate": "yarn prisma generate",
     "prisma:migrate": "dotenv -e .env.development.local -- yarn prisma migrate deploy"
@@ -50,6 +51,7 @@
     "moment": "^2.29.4",
     "multiparty": "^4.2.3",
     "next": "^13",
+    "pino": "^8.16.0",
     "react": "^18.2",
     "react-dom": "^18.2",
     "react-dropzone": "^14.2.3",
