@@ -2,6 +2,7 @@ import { livepeer, prisma, sdk } from "src/lib/providers";
 import { Contract } from "constants/contracts";
 import { ContractEvent } from "@thirdweb-dev/sdk";
 import pino from "pino";
+import { PrismaPromise } from "@prisma/client";
 
 const logger = pino();
 
@@ -22,7 +23,10 @@ const dumpAssetData = async (uid: string) => {
   };
 };
 
-const handleEvent = async (event: ContractEvent<Record<string, any>>) => {
+const handleEvent = async (
+  tx: any[],
+  event: ContractEvent<Record<string, any>>
+) => {
   const log = logger.child({
     event: event.eventName,
     tx: event.transaction.transactionHash,
@@ -34,64 +38,79 @@ const handleEvent = async (event: ContractEvent<Record<string, any>>) => {
 
   switch (name) {
     case "VideoAssetCreated":
-      return prisma.video.upsert({
-        where: { id: data.uid },
-        update: {
-          title: data.title,
-          description: data.description,
-          authorId: data.author,
-          mintTx: event.transaction.transactionHash,
-          tokenId: data.tokenId.toHexString(),
-        },
-        create: {
-          id: data.uid,
-          title: data.title,
-          description: data.description,
-          authorId: data.author,
-          mintTx: event.transaction.transactionHash,
-          tokenId: data.tokenId.toHexString(),
-          ...(await dumpAssetData(data.uid)),
-        },
-      });
+      tx.push(
+        prisma.video.upsert({
+          where: { id: data.uid },
+          update: {
+            title: data.title,
+            description: data.description,
+            authorId: data.author,
+            mintTx: event.transaction.transactionHash,
+            tokenId: data.tokenId.toHexString(),
+          },
+          create: {
+            id: data.uid,
+            title: data.title,
+            description: data.description,
+            authorId: data.author,
+            mintTx: event.transaction.transactionHash,
+            tokenId: data.tokenId.toHexString(),
+            ...(await dumpAssetData(data.uid)),
+          },
+        })
+      );
+      break;
     case "VideoAssetMetadataUpdated":
-      return prisma.video.update({
-        where: { id: data.uid },
-        data: {
-          title: data.title,
-          description: data.description,
-        },
-      });
+      tx.push(
+        prisma.video.update({
+          where: { id: data.uid },
+          data: {
+            title: data.title,
+            description: data.description,
+          },
+        })
+      );
+      break;
     case "VideoAssetLiked":
-      return prisma.like.upsert({
-        where: {
-          userId_videoId: {
+      tx.push(
+        prisma.like.upsert({
+          where: {
+            userId_videoId: {
+              videoId: data.uid,
+              userId: data.liker,
+            },
+          },
+          update: {},
+          create: {
             videoId: data.uid,
             userId: data.liker,
+            tx: event.transaction.transactionHash,
           },
-        },
-        update: {},
-        create: {
-          videoId: data.uid,
-          userId: data.liker,
-          tx: event.transaction.transactionHash,
-        },
-      });
+        })
+      );
+      break;
     case "VideoAssetUnliked":
-      return prisma.like.deleteMany({
-        where: {
-          userId: data.liker,
-          videoId: data.uid,
-        },
-      });
+      tx.push(
+        prisma.like.deleteMany({
+          where: {
+            userId: data.liker,
+            videoId: data.uid,
+          },
+        })
+      );
+      break;
     case "VideoAssetCommented":
-      return prisma.comment.create({
-        data: {
-          videoId: data.uid,
-          userId: data.author,
-          text: data.comment,
-          tx: event.transaction.transactionHash,
-        },
-      });
+      tx.push(
+        prisma.comment.create({
+          data: {
+            videoId: data.uid,
+            userId: data.author,
+            text: data.comment,
+            tx: event.transaction.transactionHash,
+          },
+        })
+      );
+      break;
   }
 };
 
@@ -116,7 +135,7 @@ const processBlock = async (blockNumber: number) => {
 
   const tx: any[] = [];
   for (const event of events) {
-    tx.push(handleEvent(event));
+    await handleEvent(tx, event);
   }
 
   try {
@@ -131,7 +150,7 @@ const processBlock = async (blockNumber: number) => {
 
     logger.info(`Synced events to block ${blockNumber}`);
   } catch (e) {
-    logger.error("Error syncing events", e);
+    logger.error(e, "Error syncing events");
   }
 };
 
