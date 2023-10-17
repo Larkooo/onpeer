@@ -398,6 +398,8 @@ const Video = ({
   );
 };
 
+// we cache the page requests for 1 hour
+export const revalidate = 3600;
 export const getServerSideProps = async (ctx: any) => {
   const { id } = ctx.query;
   const parsedId = isUuid.test(id) ? id : uuidTranslator.toUUID(id);
