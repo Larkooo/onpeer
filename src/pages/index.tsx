@@ -22,6 +22,7 @@ import { Contract } from "constants/contracts";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const address = useAddress();
@@ -102,7 +103,7 @@ const Home: NextPage = () => {
         ) : (
           <Connect />
         )}
-        {(address && isLoggedIn) && <Button onClick={() => push("/dashboard")} variant="outline">Your videos</Button>}
+        {(address && isLoggedIn) && <Link href="/dashboard"><Button variant="outline">Your videos</Button></Link>}
       </div>
     </div>
   );

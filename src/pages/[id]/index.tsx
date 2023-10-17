@@ -27,7 +27,11 @@ import {
 import {
   TransactionResult,
   useAddress,
+  useConnect,
   useContract,
+  useMetamask,
+  useRainbowWallet,
+  useWalletConnect,
 } from "@thirdweb-dev/react";
 import { Contract } from "constants/contracts";
 import moment from "moment";
@@ -81,6 +85,7 @@ const Video = ({
   const parsedId = id && (isUuid.test(id) ? id : uuidTranslator.toUUID(id));
 
   const address = useAddress();
+  const connect = useMetamask();
 
   const { contract } = useContract(Contract.address!);
   const [pendingOp, setPendingOp] = useState<"like" | "undoLike" | "comment">();
@@ -114,40 +119,48 @@ const Video = ({
     if (op === "comment") args.push(comment);
 
     setPendingOp(op);
+
+    const onTx = (tx: TransactionResult) => {
+      switch (op) {
+        case "like":
+          setLikes([
+            ...likes,
+            { userId: address, tx: tx.receipt.transactionHash },
+          ]);
+          break;
+        case "undoLike":
+          setLikes(likes.filter((l) => l.userId !== address));
+          break;
+        case "comment":
+          setComments([
+            ...comments,
+            {
+              id: tx.receipt.transactionHash,
+              userId: address,
+              text: comment,
+              tx: tx.receipt.transactionHash,
+            },
+          ]);
+          setComment("");
+          break;
+      }
+    }
+
+    // prompt user to connect if not connected
+    if (!address) {
+      await connect();
+    }
+
     contract!
       .call(op!, args)
-      .then((tx: any) => {
-        switch (op) {
-          case "like":
-            setLikes([
-              ...likes,
-              { userId: address, tx: tx.receipt.transactionHash },
-            ]);
-            break;
-          case "undoLike":
-            setLikes(likes.filter((l) => l.userId !== address));
-            break;
-          case "comment":
-            setComments([
-              ...comments,
-              {
-                id: tx.receipt.transactionHash,
-                userId: address,
-                text: comment,
-                tx: tx.receipt.transactionHash,
-              },
-            ]);
-            setComment("");
-            break;
-        }
-      })
+      .then(onTx as any)
       .catch((e) => {
         console.log(e);
       })
       .finally(() => {
         setPendingOp(undefined);
       });
-  }, [contract, tokenId, comment, likes, comments, address]);
+  }, [contract, tokenId, comment, likes, comments, address, connect]);
 
   return (
     <>
