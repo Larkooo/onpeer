@@ -32,7 +32,7 @@ import {
 import { Contract } from "constants/contracts";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import shortUUID, { uuid } from "short-uuid";
 import { addApolloState, initializeApollo } from "src/lib/apolloClient";
 import Head from "next/head";
@@ -99,6 +99,7 @@ const Video = ({
     setComments(data.comments);
   }, [data]);
 
+  const [tokenId, setTokenId] = useState(video.tokenId);
   const [mintTx, setMintTx] = useState(video.mintTx);
   const [title, setTitle] = useState(video.title);
   const [description, setDescription] = useState(video.description);
@@ -106,10 +107,10 @@ const Video = ({
   const [comments, setComments] = useState<any[]>([]);
   const [likes, setLikes] = useState<any[]>([]);
 
-  const handleOp = async (op: typeof pendingOp) => {
+  const handleOp = useCallback(async (op: typeof pendingOp) => {
     if (op === "comment" && !comment) return;
 
-    let args = [video.tokenId];
+    let args = [tokenId];
     if (op === "comment") args.push(comment);
 
     setPendingOp(op);
@@ -146,7 +147,7 @@ const Video = ({
       .finally(() => {
         setPendingOp(undefined);
       });
-  };
+  }, [contract, tokenId, comment, likes, comments, address]);
 
   return (
     <>
@@ -268,14 +269,14 @@ const Video = ({
                   <span className="flex flex-grow gap-1">
                     {title || "no title"}
                     {video.authorId === address &&
-                      (mintTx ? (
+                      (tokenId ? (
                         <VideoMetadataDialog
                           button={
                             <Pencil1Icon className="cursor-pointer text-orange-600 transition-all hover:rotate-12 hover:scale-125" />
                           }
                           currentTitle={title}
                           currentDescription={description}
-                          tokenId={video.tokenId!}
+                          tokenId={tokenId!}
                           onUpdated={(title, description) => {
                             setTitle(title);
                             setDescription(description);
@@ -289,6 +290,7 @@ const Video = ({
                           }
                           signature={JSON.parse(video.mintSignature as any)}
                           onMinted={(title, description, txHash) => {
+                            setTokenId(JSON.parse(video.mintSignature as any).payload.uid)
                             setMintTx(txHash);
                             setTitle(title);
                             setDescription(description);
@@ -360,14 +362,14 @@ const Video = ({
                 </div>
                 <div className="flex gap-4">
                   <Input
-                    disabled={pendingOp === "comment" || !video.tokenId}
+                    disabled={pendingOp === "comment" || !tokenId}
                     value={comment}
                     onChange={(e) => setComment(e.currentTarget.value)}
                     type="text"
                     placeholder="you should do more of this and more of that..."
                   />
                   <Button
-                    disabled={pendingOp === "comment" || !video.tokenId}
+                    disabled={pendingOp === "comment" || !tokenId}
                     onClick={() => handleOp("comment")}
                   >
                     <span
