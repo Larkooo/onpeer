@@ -94,13 +94,13 @@ const VideoCard = ({
                 // autoplay the video to load the first frame
                 // we pause & mute it afterwards
                 autoPlay
-                onLoad={async (e) => {
+                onCanPlay={async (e) => {
+                  e.currentTarget.muted = true;
                   await e.currentTarget.pause();
                 }}
 
                 // play video on hover
                 onMouseEnter={async (e) => {
-                  e.currentTarget.muted = true;
                   await e.currentTarget.play();
                 }}
                 // reset video
