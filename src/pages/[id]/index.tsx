@@ -149,14 +149,14 @@ const Video = ({
   return (
     <>
       <Head>
-        <title>{video.title}</title>
+        <title>{title}</title>
         <meta name="description" content={description} />
         <meta
           property="og:url"
           content={`https://onpeer.vercel.app/${parsedId}`}
         />
         <meta property="og:type" content="video.other" />
-        <meta property="og:title" content={video.title} />
+        <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta
           property="og:video:type"
@@ -171,7 +171,7 @@ const Video = ({
           content={playbackInfo.meta.source[0].height?.toString()}
         />
 
-        <meta property="twitter:title" content={video.title} />
+        <meta property="twitter:title" content={title} />
         <meta
           name="twitter:player:width"
           content={playbackInfo.meta.source[0].width?.toString()}
@@ -262,13 +262,13 @@ const Video = ({
               <CardHeader>
                 <CardTitle className="flex flex-row gap-4">
                   <span className="flex flex-grow gap-1">
-                    {video.title || "no title"}
+                    {title || "no title"}
                     {video.authorId === address && (
                       <VideoMetadataDialog
                         button={
                           <Pencil1Icon className="cursor-pointer text-orange-600 transition-all hover:rotate-12 hover:scale-125" />
                         }
-                        currentTitle={video.title}
+                        currentTitle={title}
                         currentDescription={description}
                         tokenId={video.tokenId!}
                         onUpdated={(title, description) => {
