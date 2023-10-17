@@ -4,6 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { gql, useQuery } from "@apollo/client";
 import { LapTimerIcon } from "@radix-ui/react-icons";
 import { useUser } from "@thirdweb-dev/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import VideoCard from "src/components/VideoCard";
 
 const GET_VIDEOS = gql`
@@ -28,6 +30,13 @@ const Dashboard = () => {
     },
     skip: !user?.address,
   });
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user?.address) {
+      router.replace("/");
+    }
+  }, [user?.address]);
 
   return (
     <div className="flex flex-col p-4 gap-2">
