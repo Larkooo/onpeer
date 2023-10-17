@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { gql, useQuery } from "@apollo/client";
 import { LapTimerIcon } from "@radix-ui/react-icons";
-import { useUser } from "@thirdweb-dev/react";
+import { useAddress, useUser } from "@thirdweb-dev/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import VideoCard from "src/components/VideoCard";
@@ -23,6 +23,7 @@ const GET_VIDEOS = gql`
 `;
 
 const Dashboard = () => {
+  const address = useAddress();
   const { user } = useUser();
   const { data, loading, error } = useQuery(GET_VIDEOS, {
     variables: {
@@ -33,10 +34,10 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user?.address) {
+    if (!address) {
       router.replace("/");
     }
-  }, [user?.address]);
+  }, [address]);
 
   return (
     <div className="flex flex-col p-4 gap-2">

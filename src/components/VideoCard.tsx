@@ -38,13 +38,16 @@ interface VideoCardProps {
 
 const VideoCard = ({
   id,
-  title,
-  description,
+  title: initialTitle,
+  description: initialDescription,
   playbackId,
   views,
   mintTx,
   createdAt,
 }: VideoCardProps) => {
+  const [title, setTitle] = useState(initialTitle);
+  const [description, setDescription] = useState(initialDescription);
+
   const { user } = useUser();
   const loading = usePageLoad();
 
@@ -55,33 +58,37 @@ const VideoCard = ({
   });
 
   return (
-    <Link href={shortUUID().fromUUID(id)}>
-      <div className="relative">
-        <div className="z-50 absolute top-4 right-4">
-          <Tooltip>
-            <TooltipTrigger>
-              {toSign && (
-                <MintDialog
-                  button={
-                    <ExclamationTriangleIcon className="transition-all text-red-500 hover:text-red-300 hover:brightness-100" />
-                  }
-                  id={id}
-                  signature={toSign}
-                />
-              )}
-            </TooltipTrigger>
-            <TooltipContent>
-              Mint this video to make it persistent.
-            </TooltipContent>
-          </Tooltip>
-        </div>
+    <div className="relative">
+      <div className="z-50 absolute top-4 right-4">
+        <Tooltip>
+          <TooltipTrigger>
+            {toSign && (
+              <MintDialog
+                button={
+                  <ExclamationTriangleIcon className="transition-all text-red-500 hover:text-red-300 hover:brightness-100" />
+                }
+                id={id}
+                signature={toSign}
+                onMinted={(title, description, txHash) => {
+                  setTitle(title);
+                  setDescription(description);
+                }}
+              />
+            )}
+          </TooltipTrigger>
+          <TooltipContent>
+            Mint this video to make it persistent.
+          </TooltipContent>
+        </Tooltip>
+      </div>
+      <Link href={shortUUID().fromUUID(id)}>
         <Card
           className={`relative transition-all hover:brightness-90 overflow-hidden ${
             loading ? "animate-pulse" : ""
           }`}
         >
           <CardHeader className="px-4 pb-0 pt-4">
-            <CardTitle className="text-ellipsis  whitespace-nowrap overflow-hidden pr-3">
+            <CardTitle className="text-ellipsis  whitespace-nowrap overflow-hidden pr-5">
               {title || "no title"}
             </CardTitle>
             <CardDescription className="text-ellipsis  whitespace-nowrap overflow-hidden flex-wrap">
@@ -114,8 +121,8 @@ const VideoCard = ({
             </div>
           </CardContent>
         </Card>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

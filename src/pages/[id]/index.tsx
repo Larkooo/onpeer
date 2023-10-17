@@ -42,6 +42,7 @@ import { GetVideoLikesComments } from "./__generated__/GetVideoLikesComments";
 import { formatHash } from "src/lib/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VideoMetadataDialog from "src/components/VideoMetadataDialog";
+import MintDialog from "src/components/MintDialog";
 
 const GET_VIDEO_LIKES_COMMENTS = gql`
   query GetVideoLikesComments($id: String!) {
@@ -98,6 +99,7 @@ const Video = ({
     setComments(data.comments);
   }, [data]);
 
+  const [mintTx, setMintTx] = useState(video.mintTx);
   const [title, setTitle] = useState(video.title);
   const [description, setDescription] = useState(video.description);
   const [comment, setComment] = useState("");
@@ -217,18 +219,20 @@ const Video = ({
                   </CardTitle>
                   {/* transaction hash */}
                   <a
-                    href={`${Contract.chain.explorers?.[0].url}/tx/${video.mintTx}`}
+                    href={`${Contract.chain.explorers?.[0].url}/tx/${mintTx}`}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <CardDescription
-                      style={{
-                        marginTop: "0px",
-                      }}
-                      className="flex gap-1 items-center hover:underline"
-                    >
-                      {formatHash(video.mintTx!)} <ExternalLinkIcon />
-                    </CardDescription>
+                    {mintTx && (
+                      <CardDescription
+                        style={{
+                          marginTop: "0px",
+                        }}
+                        className="flex gap-1 items-center hover:underline"
+                      >
+                        {formatHash(mintTx!)} <ExternalLinkIcon />
+                      </CardDescription>
+                    )}
                   </a>
                 </div>
                 <Button
@@ -263,20 +267,34 @@ const Video = ({
                 <CardTitle className="flex flex-row gap-4">
                   <span className="flex flex-grow gap-1">
                     {title || "no title"}
-                    {video.authorId === address && (
-                      <VideoMetadataDialog
-                        button={
-                          <Pencil1Icon className="cursor-pointer text-orange-600 transition-all hover:rotate-12 hover:scale-125" />
-                        }
-                        currentTitle={title}
-                        currentDescription={description}
-                        tokenId={video.tokenId!}
-                        onUpdated={(title, description) => {
-                          setTitle(title);
-                          setDescription(description);
-                        }}
-                      />
-                    )}
+                    {video.authorId === address &&
+                      (mintTx ? (
+                        <VideoMetadataDialog
+                          button={
+                            <Pencil1Icon className="cursor-pointer text-orange-600 transition-all hover:rotate-12 hover:scale-125" />
+                          }
+                          currentTitle={title}
+                          currentDescription={description}
+                          tokenId={video.tokenId!}
+                          onUpdated={(title, description) => {
+                            setTitle(title);
+                            setDescription(description);
+                          }}
+                        />
+                      ) : (
+                        <MintDialog
+                          id={video.id}
+                          button={
+                            <Pencil1Icon className="cursor-pointer text-orange-600 transition-all hover:rotate-12 hover:scale-125" />
+                          }
+                          signature={JSON.parse(video.mintSignature as any)}
+                          onMinted={(title, description, txHash) => {
+                            setMintTx(txHash);
+                            setTitle(title);
+                            setDescription(description);
+                          }}
+                        />
+                      ))}
                   </span>
                   <div className="flex gap-1">
                     {loadingLikesComments ? (
