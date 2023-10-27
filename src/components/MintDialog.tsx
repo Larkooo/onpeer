@@ -115,7 +115,7 @@ const MintDialog = ({ id, button, signature, onMinted }: MintDialogProps) => {
           <div className="flex-grow text-xs text-gray-400">
             Taking into account your video size and length, the calculated cost
             to mint your video is <span className="bg-gradient-to-r from-orange-600 to-purple-700 bg-clip-text text-transparent">
-            {signature.payload.price}{" "}
+            {Number.parseFloat(signature.payload.price).toFixed(3)}{" "}
             {Contract.chain.nativeCurrency.symbol}
             </span>
           </div>

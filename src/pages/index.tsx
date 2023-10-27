@@ -24,6 +24,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import shortUUID from "short-uuid";
+import { Video } from "@prisma/client";
 
 const Home: NextPage = () => {
   const address = useAddress();
@@ -44,10 +45,10 @@ const Home: NextPage = () => {
       method: "POST",
       body: data,
     });
-    const signature: SignedPayload721WithQuantitySignature = await res.json();
+    const video: Video = await res.json();
 
     // Move to video page
-    push(`/${uuid.fromUUID(signature.payload.uid)}`);
+    push(`/${uuid.fromUUID(video.id)}`);
     toast({
       title: "Video: Uploaded",
       description: "Mint your video to make it persistent.",
@@ -56,7 +57,7 @@ const Home: NextPage = () => {
           className="bg-orange-600 text-white hover:bg-orange-500 px-5 gap-2"
           altText="Mint"
           onClick={async () => {
-            await contract!.erc721.signature.mint(signature);
+            await contract!.erc721.signature.mint(JSON.parse(video.mintSignature as any));
           }}
         >
           Mint <Pencil1Icon />

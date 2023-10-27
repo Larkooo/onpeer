@@ -93,7 +93,7 @@ export const UploadFile = ({
                   key={f.name}
                   className="w-full inline-flex items-center justify-center gap-4"
                 >
-                  <Cross2Icon onClick={() => removeFile(f)} />
+                  {!uploading && <Cross2Icon onClick={() => removeFile(f)} />}
                   {f.name}{" "}
                 </span>
               ))

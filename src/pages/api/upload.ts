@@ -9,6 +9,7 @@ import { File } from "buffer";
 import { kv } from "@vercel/kv";
 import { Contract } from "constants/contracts";
 import { livepeer, prisma, sdk } from "src/lib/providers";
+import { getVideoDurationInSeconds } from "get-video-duration";
 
 //set bodyparser
 export const config = {
@@ -49,6 +50,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
+  // we calculate mint price depending on video duration
+  // and service fee
+  const videoDuration = await getVideoDurationInSeconds(file.filepath);
+  let mintPrice = videoDuration * Number.parseFloat(process.env.MINT_VIDEO_PER_SECOND_PRICE!);
+  mintPrice += Number.parseFloat(process.env.MINT_VIDEO_SERVICE_FEE_PRICE!);
+
   const result = await livepeer.createAsset({
     sources: [
       {
@@ -58,16 +65,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     ],
   });
-
+  
   const onpeer = await sdk.getContract(Contract.address!);
   const signature = await onpeer.erc721.signature.generate({
     to: user.address,
     metadata: result[0].id,
     quantity: 1,
-    price: 0.1,
+    price: mintPrice,
   });
 
-  await prisma.video.create({
+  const video = await prisma.video.create({
     data: {
       id: result[0].id,
       title: file.originalFilename!,
@@ -79,7 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  return res.status(200).json(signature);
+  return res.status(200).json(video);
 };
 
 export default handler;
