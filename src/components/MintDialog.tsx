@@ -47,7 +47,6 @@ const MintDialog = ({ id, button, signature, onMinted }: MintDialogProps) => {
     // use our mint implementation
     (mint as any).method = "mint";
 
-    console.log(mint);
     // execute the mint txn
     mint
       .execute()

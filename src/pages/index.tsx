@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import shortUUID from "short-uuid";
 
 const Home: NextPage = () => {
   const address = useAddress();
@@ -34,6 +35,8 @@ const Home: NextPage = () => {
   const { push } = useRouter();
 
   const onUpload = async (files: File[]) => {
+    const uuid = shortUUID();
+
     const data = new FormData();
     data.append("file", files[0]);
 
@@ -43,7 +46,8 @@ const Home: NextPage = () => {
     });
     const signature: SignedPayload721WithQuantitySignature = await res.json();
 
-    push("/dashboard");
+    // Move to video page
+    push(`/${uuid.fromUUID(signature.payload.uid)}`);
     toast({
       title: "Video: Uploaded",
       description: "Mint your video to make it persistent.",
