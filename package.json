@@ -16,6 +16,7 @@
     "@apollo/client": "^3.8.4",
     "@apollo/server": "^4.9.3",
     "@as-integrations/next": "^2.0.2",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
     "@graphql-tools/schema": "^10.0.0",
     "@livepeer/react": "^2.8.6",
     "@prisma/client": "^5.3.1",
