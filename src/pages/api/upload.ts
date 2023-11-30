@@ -1,3 +1,4 @@
+import ffprobe from "@ffprobe-installer/ffprobe";
 import { ThirdwebSDK, getContract } from "@thirdweb-dev/sdk";
 import { getUser, onpeerWallet } from "./auth/[...thirdweb]";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -52,8 +53,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // we calculate mint price depending on video duration
   // and service fee
-  const videoDuration = await getVideoDurationInSeconds(file.filepath);
-  let mintPrice = videoDuration * Number.parseFloat(process.env.MINT_VIDEO_PER_SECOND_PRICE!);
+  const videoDuration = await getVideoDurationInSeconds(
+    file.filepath,
+    ffprobe.path
+  );
+  let mintPrice =
+    videoDuration * Number.parseFloat(process.env.MINT_VIDEO_PER_SECOND_PRICE!);
   mintPrice += Number.parseFloat(process.env.MINT_VIDEO_SERVICE_FEE_PRICE!);
 
   const result = await livepeer.createAsset({
@@ -65,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     ],
   });
-  
+
   const onpeer = await sdk.getContract(Contract.address!);
   const signature = await onpeer.erc721.signature.generate({
     to: user.address,
