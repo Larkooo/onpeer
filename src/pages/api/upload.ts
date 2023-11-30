@@ -1,4 +1,3 @@
-import ffprobe from "@ffprobe-installer/ffprobe";
 import { ThirdwebSDK, getContract } from "@thirdweb-dev/sdk";
 import { getUser, onpeerWallet } from "./auth/[...thirdweb]";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -10,7 +9,8 @@ import { File } from "buffer";
 import { kv } from "@vercel/kv";
 import { Contract } from "constants/contracts";
 import { livepeer, prisma, sdk } from "src/lib/providers";
-import { getVideoDurationInSeconds } from "get-video-duration";
+import ffprobe from "ffprobe";
+import ffprobePath from "@ffprobe-installer/ffprobe";
 
 //set bodyparser
 export const config = {
@@ -53,12 +53,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // we calculate mint price depending on video duration
   // and service fee
-  const videoDuration = await getVideoDurationInSeconds(
-    file.filepath,
-    ffprobe.path
-  );
+  const videoMeta = await ffprobe(file.filepath, {
+    path: ffprobePath.path,
+  });
+
   let mintPrice =
-    videoDuration * Number.parseFloat(process.env.MINT_VIDEO_PER_SECOND_PRICE!);
+  Number.parseFloat(videoMeta.streams[0].duration!) * Number.parseFloat(process.env.MINT_VIDEO_PER_SECOND_PRICE!);
   mintPrice += Number.parseFloat(process.env.MINT_VIDEO_SERVICE_FEE_PRICE!);
 
   const result = await livepeer.createAsset({
